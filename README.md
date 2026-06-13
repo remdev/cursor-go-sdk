@@ -32,7 +32,7 @@ if err := cursor.EnsureBridgeInstalled(ctx); err != nil {
 Development from a clone:
 
 ```bash
-cd bridge && npm ci && npm link
+cd bridge && npm ci && npm run build && npm link
 ```
 
 ## Authentication

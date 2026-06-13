@@ -34,6 +34,14 @@ jobs:
         working-directory: bridge
         run: npm ci
 
+      - name: Build bridge
+        working-directory: bridge
+        run: npm run build
+
+      - name: Verify bridge proto codegen
+        working-directory: bridge
+        run: npm run generate && git diff --exit-code gen/
+
       - name: Add bridge to PATH
         run: echo "$GITHUB_WORKSPACE/bridge/bin" >> "$GITHUB_PATH"
 

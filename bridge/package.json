@@ -13,19 +13,25 @@
     "url": "https://github.com/remdev/cursor-go-sdk/issues"
   },
   "type": "module",
+  "scripts": {
+    "generate": "buf generate",
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "prepublishOnly": "npm run generate && npm run build"
+  },
   "bin": {
     "cursor-sdk-bridge": "bin/cursor-sdk-bridge"
   },
   "files": [
     "bin",
     "dist",
-    "vendor"
+    "gen",
+    "proto"
   ],
   "publishConfig": {
     "access": "public"
   },
   "dependencies": {
-    "@anysphere/proto": "file:vendor/anysphere-proto",
     "@bufbuild/protobuf": "1.10.1",
     "@connectrpc/connect": "1.7.0",
     "@connectrpc/connect-node": "1.7.0",
@@ -37,6 +43,13 @@
     "@cursor/sdk-linux-arm64": "1.0.18",
     "@cursor/sdk-linux-x64": "1.0.18",
     "@cursor/sdk-win32-x64": "1.0.18"
+  },
+  "devDependencies": {
+    "@bufbuild/buf": "^1.50.0",
+    "@bufbuild/protoc-gen-es": "1.10.1",
+    "@connectrpc/protoc-gen-connect-es": "1.7.0",
+    "@types/node": "^22.10.0",
+    "typescript": "^5.8.3"
   },
   "engines": {
     "node": ">=18"

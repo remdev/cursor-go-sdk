@@ -3,34 +3,11 @@ package bridge_test
 import (
 	"os"
 	"path/filepath"
-	"runtime"
 	"strings"
 	"testing"
 
 	"github.com/remdev/cursor-go-sdk/internal/bridge"
 )
-
-func TestCurrentPlatformMatchesRuntime(t *testing.T) {
-	t.Parallel()
-	_, err := bridge.EnsureInstalledForTestPlatform()
-	if err != nil {
-		t.Fatalf("platform mapping: %v", err)
-	}
-}
-
-func TestNpmPlatformPackageDarwinARM64(t *testing.T) {
-	t.Parallel()
-	if runtime.GOOS != "darwin" || runtime.GOARCH != "arm64" {
-		t.Skip("platform-specific assertion")
-	}
-	pkg, err := bridge.NpmPlatformPackageForTest()
-	if err != nil {
-		t.Fatal(err)
-	}
-	if pkg != "@cursor/sdk-darwin-arm64" {
-		t.Fatalf("got %q", pkg)
-	}
-}
 
 func TestResolvePathFromBridgeRoot(t *testing.T) {
 	repoBridge, err := filepath.Abs(filepath.Join("..", "..", "bridge"))

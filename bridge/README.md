@@ -17,7 +17,7 @@ npm install -g @cursor-go-sdk/cursor-sdk-bridge
 From a clone of this repository (development):
 
 ```bash
-cd bridge && npm ci && npm link
+cd bridge && npm ci && npm run build && npm link
 ```
 
 Requires **Node.js >= 18**.
@@ -37,9 +37,17 @@ See [PUBLISHING.md](PUBLISHING.md).
 | Path | Role |
 |------|------|
 | `package.json` | npm package `@cursor-go-sdk/cursor-sdk-bridge` |
-| `vendor/anysphere-proto/` | Vendored `@anysphere/proto` wire definitions |
+| `proto/` | Owned protobuf wire schema (`sdk.v1`) |
+| `gen/ts/` | Generated Connect + ES modules (`npm run generate`) |
+| `src/` | TypeScript source (Connect RPC handlers → `@cursor/sdk`) |
+| `dist/` | Compiled output (`npm run build`, gitignored) |
 | `bin/cursor-sdk-bridge` | Shell launcher → `dist/bin/cursor-sdk-bridge.js` |
-| `dist/` | Connect RPC server |
+
+## Wire protocol
+
+Protobuf schema: [`proto/`](proto/) (`sdk.v1`). Regenerate TypeScript: `npm run generate` → `gen/ts/`.
+
+Connect services: `SdkAgentService`, `SdkBridgeControlService`, `SdkCursorService`. Go client: `internal/connect/`.
 
 ## Go SDK discovery
 

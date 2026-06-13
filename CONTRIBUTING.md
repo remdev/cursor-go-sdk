@@ -14,7 +14,10 @@ Thanks for your interest in `cursor-go-sdk`. This is a community project; see [D
 git clone https://github.com/remdev/cursor-go-sdk.git
 cd cursor-go-sdk
 
-cd bridge && npm ci && npm link && cd ..
+cd bridge && npm ci && npm run build && npm link && cd ..
+
+# After editing bridge/proto/*.proto:
+# cd bridge && npm run generate && npm run build
 
 export CURSOR_API_KEY="cursor_..."   # optional, for live examples only
 ```
@@ -36,7 +39,7 @@ go vet ./examples/...
 go run ./examples/quickstart
 ```
 
-CI runs the same checks without `CURSOR_API_KEY`. Bridge tests require `cursor-sdk-bridge` on `PATH` (CI installs via `npm ci` in `bridge/`).
+CI runs the same checks without `CURSOR_API_KEY`. Bridge tests require `cursor-sdk-bridge` on `PATH` (CI runs `npm ci && npm run build` in `bridge/`).
 
 ## Pull requests
 
@@ -44,7 +47,7 @@ CI runs the same checks without `CURSOR_API_KEY`. Bridge tests require `cursor-s
 2. Keep changes focused; match existing style in `cursor/` and examples.
 3. Run `go test ./...` and `go vet ./...` before opening a PR.
 4. Update [README.md](README.md) or [references/](references/) if behavior or setup changes.
-5. Do not commit `bridge/node_modules/`, secrets, or `.artifacts/` contents.
+5. Do not commit `bridge/node_modules/`, `bridge/dist/`, secrets, or `.artifacts/` contents.
 
 ## API parity
 

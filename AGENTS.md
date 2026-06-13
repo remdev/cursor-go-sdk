@@ -7,7 +7,7 @@ Go SDK for Cursor agents. Parity target: TypeScript `@cursor/sdk` and Python `cu
 ## Before coding
 
 1. Read [references/README.md](references/README.md) — index of local docs and upstream links.
-2. Bridge prerequisite: `npm install -g @cursor-go-sdk/cursor-sdk-bridge` or `cd bridge && npm ci && npm link` (see [references/bridge.md](references/bridge.md)).
+2. Bridge prerequisite: `npm install -g @cursor-go-sdk/cursor-sdk-bridge` or `cd bridge && npm ci && npm run build && npm link` (see [references/bridge.md](references/bridge.md)).
 3. Set `CURSOR_API_KEY` for live runs.
 4. Run `go test ./...` after changes.
 
@@ -28,14 +28,14 @@ Go SDK for Cursor agents. Parity target: TypeScript `@cursor/sdk` and Python `cu
 Go cannot load the npm SDK directly. **`@cursor-go-sdk/cursor-sdk-bridge`** installs the `cursor-sdk-bridge` binary; Go launches it and talks Connect over loopback.
 
 ```bash
-cd bridge && npm ci && npm link
+cd bridge && npm ci && npm run build && npm link
 ```
 
 - **npm package:** `bridge/package.json` → `@cursor-go-sdk/cursor-sdk-bridge`, `@cursor/sdk`, Connect/protobuf.
-- **Adapter glue:** `bridge/dist/` — maintained in **this repo** (see [references/bridge.md](references/bridge.md)).
+- **Adapter glue:** `bridge/src/` — maintained in **this repo** (see [references/bridge.md](references/bridge.md)).
 - **Go launcher:** `internal/bridge/` — subprocess, discovery, callbacks.
 
-Update path: bump `@cursor/sdk` in `package.json` → publish npm version → adjust `bridge/dist/` if API changed → `go test ./...`.
+Update path: bump `@cursor/sdk` in `package.json` → publish npm version → adjust `bridge/src/` if API changed → `npm run build` → `go test ./...`.
 
 Requires **Node.js >= 18**. Override: `CURSOR_SDK_BRIDGE_BIN`, `CURSOR_SDK_BRIDGE_ROOT`, `CURSOR_SDK_NODE_BIN`.
 

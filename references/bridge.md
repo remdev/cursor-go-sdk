@@ -3,8 +3,10 @@
 `@cursor-go-sdk/cursor-sdk-bridge` is the **Node adapter** that lets Go call [`@cursor/sdk`](https://www.npmjs.com/package/@cursor/sdk) over Connect JSON on loopback. It is a **prerequisite** for the Go SDK, distributed as an npm package with a `cursor-sdk-bridge` binary.
 
 ```
-Go (cursor/)  ──Connect JSON──►  cursor-sdk-bridge  ──require()──►  @cursor/sdk in node_modules
+Go (cursor/)  ──Connect JSON (proto/sdk.v1)──►  cursor-sdk-bridge  ──@cursor/sdk──►  agents
 ```
+
+Protobuf schema is owned in [`bridge/proto/`](../bridge/proto/). TypeScript stubs: `npm run generate`.
 
 ## Install (prerequisite)
 
@@ -17,7 +19,7 @@ Requires **Node.js >= 18** and **npm**.
 Development from this repo:
 
 ```bash
-cd bridge && npm ci && npm link
+cd bridge && npm ci && npm run build && npm link
 ```
 
 Verify:
@@ -32,7 +34,7 @@ if err := cursor.EnsureBridgeInstalled(ctx); err != nil { /* bridge not on PATH 
 
 ## What the adapter does
 
-The Connect server in `bridge/dist/` translates RPC requests into `@cursor/sdk` calls:
+The Connect server in `bridge/src/` (compiled to `dist/`) translates RPC requests into `@cursor/sdk` calls:
 
 - **Local agents:** tools, MCP, store, `api2.cursor.sh` — all inside the npm SDK
 - **Cloud agents:** `api.cursor.com` via the npm SDK
@@ -61,7 +63,7 @@ Custom tools: Go starts a loopback `ToolCallbackServer`; bridge forwards tool ex
 ## Maintenance
 
 - **Bump runtime:** edit `bridge/package.json` → publish new npm version → test Go SDK.
-- **Bump adapter:** edit `bridge/dist/` when Connect proto or `@cursor/sdk` API changes.
+- **Bump adapter:** edit `bridge/src/` when Connect proto or `@cursor/sdk` API changes; run `npm run generate && npm run build`.
 - **Trim inventory:** [bridge-trim.md](bridge-trim.md).
 
 Adapter source: [../bridge/README.md](../bridge/README.md).

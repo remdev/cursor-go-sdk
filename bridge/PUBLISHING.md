@@ -16,11 +16,18 @@ npm whoami
 ```bash
 cd bridge
 npm ci
+npm run build
 ./bin/cursor-sdk-bridge --help
 npm publish --dry-run --access public
 ```
 
-Review the tarball contents: `bin/`, `dist/`, `vendor/` must be included.
+Review the tarball contents: `bin/`, `dist/`, `gen/`, `proto/` must be included.
+
+Regenerate after `.proto` changes:
+
+```bash
+npm run generate && npm run build
+```
 
 ## Publish
 
