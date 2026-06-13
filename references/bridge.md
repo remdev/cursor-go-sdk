@@ -10,8 +10,10 @@ cd bridge && npm install
 
 Dependencies are declared in `bridge/package.json`:
 
-- `@cursor/sdk@1.0.18` — agent runtime (same as TypeScript SDK)
+- `@cursor/sdk@1.0.18` — agent runtime (latest; same as TypeScript SDK)
 - `@cursor/sdk-<platform>@1.0.18` — optional native helpers (rg, sandbox)
+- `@connectrpc/connect@1.7.0`, `@connectrpc/connect-node@1.7.0` — Connect RPC (1.x line required by `@cursor/sdk`)
+- `@bufbuild/protobuf@1.10.1` — protobuf runtime (1.x line required by `@cursor/sdk`)
 
 Requires **Node.js >= 18** and **npm**.
 
