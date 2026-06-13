@@ -1,0 +1,8 @@
+blank_issues: false
+contact_links:
+  - name: Disclaimer (unofficial project)
+    url: https://github.com/remdev/cursor-go-sdk/blob/main/DISCLAIMER.md
+    about: This repo is not affiliated with Cursor or Anysphere.
+  - name: Cursor product support
+    url: https://cursor.com/docs
+    about: Account, billing, and official SDK questions.

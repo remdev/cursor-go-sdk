@@ -1,0 +1,174 @@
+# Community Go client for Cursor agents (unofficial)
+
+[![CI](https://github.com/remdev/cursor-go-sdk/actions/workflows/ci.yml/badge.svg)](https://github.com/remdev/cursor-go-sdk/actions/workflows/ci.yml)
+[![Go Reference](https://pkg.go.dev/badge/github.com/remdev/cursor-go-sdk/cursor.svg)](https://pkg.go.dev/github.com/remdev/cursor-go-sdk/cursor)
+[![License: MIT](https://img.shields.io/github/license/remdev/cursor-go-sdk)](LICENSE)
+[![Go Version](https://img.shields.io/github/go-mod/go-version/remdev/cursor-go-sdk)](go.mod)
+
+> **Unofficial community project** — not affiliated with [Cursor](https://cursor.com) or [Anysphere](https://anysphere.co).  
+> See **[DISCLAIMER.md](DISCLAIMER.md)** for details. Official SDKs: [TypeScript docs](https://cursor.com/docs/sdk/typescript).
+
+Go client for [Cursor agents](https://cursor.com/docs/sdk/typescript). API parity with TypeScript `@cursor/sdk` and Python `cursor-sdk`.
+
+Local agents run through **cursor-sdk-bridge** — a Node process in [`bridge/`](bridge/) that wraps `@cursor/sdk`. Install bridge dependencies once; the Go library launches and talks to it over Connect.
+
+**Requirements:** Go 1.26+, Node.js >= 18, npm.
+
+## Install
+
+```bash
+go get github.com/remdev/cursor-go-sdk/cursor
+```
+
+Set up the bridge (from a checkout of this repo, or copy the `bridge/` directory):
+
+```bash
+cd bridge && npm install
+```
+
+If your working directory is not the repo root:
+
+```bash
+export CURSOR_SDK_BRIDGE_ROOT="/path/to/bridge"
+```
+
+Helper:
+
+```bash
+go run github.com/remdev/cursor-go-sdk/cmd/setup-bridge
+```
+
+Check readiness:
+
+```go
+if err := cursor.EnsureBridgeInstalled(ctx); err != nil {
+    // bridge or node_modules missing
+}
+```
+
+## Authentication
+
+```bash
+export CURSOR_API_KEY="cursor_..."
+```
+
+## Quick start
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+
+	"github.com/remdev/cursor-go-sdk/cursor"
+)
+
+func main() {
+	ctx := context.Background()
+
+	agent, err := cursor.CreateAgent(ctx, cursor.AgentOptions{
+		Model:  "composer-2.5",
+		APIKey: os.Getenv("CURSOR_API_KEY"),
+		Local:  &cursor.LocalAgentOptions{CWD: []string{"."}},
+	})
+	if err != nil {
+		panic(err)
+	}
+	defer agent.Close(ctx)
+
+	run, err := agent.Send(ctx, "Summarize this repository", cursor.SendOptions{})
+	if err != nil {
+		panic(err)
+	}
+
+	for msg, err := range run.Messages(ctx) {
+		if err != nil {
+			panic(err)
+		}
+		if msg.Type == "assistant" {
+			fmt.Print(cursor.AssistantText(msg))
+		}
+	}
+
+	result, err := run.Wait(ctx)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println("\nstatus:", result.Status)
+}
+```
+
+One-shot helper:
+
+```go
+result, err := cursor.Prompt(ctx, "Explain main.go", cursor.AgentOptions{
+	Model:  "composer-2.5",
+	APIKey: os.Getenv("CURSOR_API_KEY"),
+	Local:  &cursor.LocalAgentOptions{CWD: []string{"."}},
+})
+```
+
+## Examples
+
+Ports of [cursor/cookbook](https://github.com/cursor/cookbook) SDK samples:
+
+| Example | Description |
+|---------|-------------|
+| [`examples/quickstart`](examples/quickstart) | Create agent, send, stream, wait |
+| [`examples/coding-agent-cli`](examples/coding-agent-cli) | Non-interactive CLI (flags, stdin) |
+| [`examples/coding-agent-tui`](examples/coding-agent-tui) | Interactive terminal UI |
+| [`examples/basic`](examples/basic) | Minimal smoke test |
+
+```bash
+export CURSOR_API_KEY=...
+go run ./examples/quickstart
+go run ./examples/coding-agent-cli -- "Explain the auth flow"
+go run ./examples/coding-agent-tui
+```
+
+## Configuration
+
+| Variable | Purpose |
+|----------|---------|
+| `CURSOR_API_KEY` | API key |
+| `CURSOR_SDK_BRIDGE_ROOT` | Bridge directory (contains `node_modules/`) |
+| `CURSOR_SDK_BRIDGE_BIN` | Override bridge launcher binary |
+| `CURSOR_SDK_NODE_BIN` | Override Node.js binary |
+| `CURSOR_SDK_BRIDGE_URL` | Connect to an existing bridge |
+| `CURSOR_SDK_BRIDGE_TOKEN` | Token for an existing bridge |
+| `CURSOR_SDK_USE_REMOTE_BRIDGE` | Skip local bridge discovery |
+
+Connect to a bridge that is already running:
+
+```go
+client, err := cursor.Connect(os.Getenv("CURSOR_SDK_BRIDGE_URL"), os.Getenv("CURSOR_SDK_BRIDGE_TOKEN"))
+```
+
+## Error handling
+
+Startup errors are typed (`AuthenticationError`, `RateLimitError`, `AgentBusyError`, …) as `*cursor.AgentError`. A started run may finish with `result.Status == cursor.RunStatusError`.
+
+```go
+result, err := run.Wait(ctx)
+if err != nil {
+    var ae *cursor.AgentError
+    if errors.As(err, &ae) {
+        // ae.IsRetryable, ae.RetryAfter, ae.RequestID
+    }
+}
+```
+
+## Documentation
+
+- [Disclaimer (unofficial project)](DISCLAIMER.md)
+- [Contributing](CONTRIBUTING.md)
+- [Security policy](SECURITY.md)
+- [API mapping (TS/Python → Go)](references/go-api-map.md)
+- [Bridge setup](references/bridge.md)
+- [AGENTS.md](AGENTS.md) — contributor and agent notes
+
+## License
+
+[MIT](LICENSE) — see [DISCLAIMER.md](DISCLAIMER.md) regarding third-party trademarks and Cursor services.

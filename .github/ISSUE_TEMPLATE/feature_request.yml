@@ -1,0 +1,32 @@
+name: Feature request
+description: Suggest an improvement
+title: "[Feature]: "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Feature requests should align with unofficial API parity goals.
+        Official SDK features belong upstream at Cursor — link docs if relevant.
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem or use case
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed solution
+    validations:
+      required: true
+
+  - type: textarea
+    id: upstream
+    attributes:
+      label: Upstream reference (optional)
+      description: Link to TypeScript/Python SDK or Cursor docs if this tracks official API.
+    validations:
+      required: false

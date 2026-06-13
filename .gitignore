@@ -1,0 +1,14 @@
+.artifacts/*
+!.artifacts/.gitkeep
+
+internal/bridge/prebuilt/
+bridge/node_modules/
+
+*.test
+/bin/
+/dist/
+
+# Coverage & local tooling
+coverage.out
+coverage.txt
+*.prof

@@ -1,0 +1,50 @@
+name: Bug report
+description: Report a problem with cursor-go-sdk
+title: "[Bug]: "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        This is an **unofficial** community project — not Cursor/Anysphere support.
+        See [DISCLAIMER.md](../DISCLAIMER.md).
+
+  - type: textarea
+    id: description
+    attributes:
+      label: What happened?
+      description: Describe the bug and what you expected.
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. go version / node version
+        2. bridge setup (npm install?)
+        3. minimal code or command
+    validations:
+      required: true
+
+  - type: input
+    id: versions
+    attributes:
+      label: Versions
+      placeholder: "go 1.26, @cursor/sdk 1.0.18, cursor-go-sdk commit or tag"
+    validations:
+      required: false
+
+  - type: dropdown
+    id: component
+    attributes:
+      label: Component
+      options:
+        - Go SDK (cursor/)
+        - Bridge (bridge/)
+        - Examples
+        - Documentation
+        - Other
+    validations:
+      required: true

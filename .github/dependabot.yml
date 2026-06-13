@@ -1,0 +1,23 @@
+version: 2
+updates:
+  - package-ecosystem: gomod
+    directory: /
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 5
+
+  - package-ecosystem: gomod
+    directory: /examples/coding-agent-tui
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 3
+
+  - package-ecosystem: npm
+    directory: /bridge
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 3
+    groups:
+      cursor-sdk:
+        patterns:
+          - "@cursor/*"

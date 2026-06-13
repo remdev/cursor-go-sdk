@@ -1,0 +1,40 @@
+import type { AgentOperationOptions, GetAgentMessagesOptions, GetRunOptions, ListAgentsOptions, ListRunsOptions } from "@anysphere/proto/sdk/v1/sdk_agent_service_pb.js";
+import type { CursorRequestOptions } from "@anysphere/proto/sdk/v1/sdk_cursor_service_pb.js";
+import { AgentMessage, type AgentOptions, DownloadArtifactChunk, ModelSelection, RunResult, RunSnapshot, RunStreamMessage, SdkAgentInfo, SdkArtifact, SdkModel, SdkRepository, SdkUser, type SendOptions, type UserMessage } from "@anysphere/proto/sdk/v1/sdk_messages_pb.js";
+import type { AgentOperationOptions as AgentGetOptions, GetRunOptions as AgentGetRunOptions, ListAgentsOptions as AgentListOptions, ListRunsOptions as AgentListRunsOptions, GetAgentMessagesOptions as AgentMessagesListOptions, CursorRequestOptions as CursorSdkRequestOptions, SDKAgent, SDKMessage, SDKAgentInfo as SdkAgentInfoValue, AgentMessage as SdkAgentMessageValue, AgentOptions as SdkAgentOptions, SDKArtifact as SdkArtifactValue, ConversationStep as SdkConversationStep, InteractionUpdate as SdkInteractionUpdate, SDKModel as SdkModelValue, SDKRepository as SdkRepositoryValue, Run as SdkRun, RunResult as SdkRunResult, SendOptions as SdkSendOptions, SDKUserMessage as SdkUserMessageValue, SDKUser as SdkUserValue } from "@cursor/sdk";
+type BridgeAgentMessagesListOptions = AgentMessagesListOptions | {
+    limit?: number;
+    offset?: number;
+    runtime: "cloud";
+    apiKey?: string;
+};
+export declare function protoAgentOptionsToSdk(options?: AgentOptions, defaultCwd?: string, customToolsAgentId?: string): SdkAgentOptions;
+export declare function protoSendOptionsToSdk(options?: SendOptions): SdkSendOptions | undefined;
+export declare function protoUserMessageToSdk(message?: UserMessage): SdkUserMessageValue;
+export declare function sdkAgentToCreateResponse(agent: SDKAgent): {
+    agentId: string;
+    model?: ModelSelection;
+};
+export declare function sdkRunToSnapshot(run: SdkRun): RunSnapshot;
+export declare function sdkRunResultToProto(result: SdkRunResult, agentId?: string, createdAtMs?: number): RunResult;
+export declare function sdkMessageToRunStreamMessage(message: SDKMessage, offset?: string): RunStreamMessage;
+export declare function sdkRunResultToRunStreamMessage(run: SdkRun, result: SdkRunResult, offset?: string): RunStreamMessage;
+export declare function sdkRunDoneToRunStreamMessage(run: SdkRun, offset?: string): RunStreamMessage;
+export declare function sdkInteractionUpdateToRunStreamMessage(update: SdkInteractionUpdate, offset?: string): RunStreamMessage;
+export declare function sdkConversationStepToRunStreamMessage(step: SdkConversationStep, offset?: string): RunStreamMessage;
+export declare function sdkListAgentsResponseItemsToProto(items: SdkAgentInfoValue[]): SdkAgentInfo[];
+export declare function sdkAgentInfoToProto(info: SdkAgentInfoValue): SdkAgentInfo;
+export declare function sdkAgentMessagesToProto(messages: SdkAgentMessageValue[]): AgentMessage[];
+export declare function sdkArtifactsToProto(artifacts: SdkArtifactValue[]): SdkArtifact[];
+export declare function sdkArtifactBufferToChunks(buffer: Buffer, chunkBytes: number): DownloadArtifactChunk[];
+export declare function sdkUserToProto(user: SdkUserValue): SdkUser;
+export declare function sdkModelsToProto(items: SdkModelValue[]): SdkModel[];
+export declare function sdkRepositoriesToProto(items: SdkRepositoryValue[]): SdkRepository[];
+export declare function protoListAgentsOptionsToSdk(options?: ListAgentsOptions, defaultCwd?: string): AgentListOptions | undefined;
+export declare function protoListRunsOptionsToSdk(options?: ListRunsOptions, defaultCwd?: string): AgentListRunsOptions | undefined;
+export declare function protoGetRunOptionsToSdk(options?: GetRunOptions, defaultCwd?: string): AgentGetRunOptions | undefined;
+export declare function protoAgentOperationOptionsToSdk(options?: AgentOperationOptions, defaultCwd?: string): AgentGetOptions | undefined;
+export declare function protoAgentMessagesOptionsToSdk(options?: GetAgentMessagesOptions, defaultCwd?: string): BridgeAgentMessagesListOptions | undefined;
+export declare function protoCursorRequestOptionsToSdk(options?: CursorRequestOptions): CursorSdkRequestOptions | undefined;
+export {};
+//# sourceMappingURL=sdk-converters.d.ts.map
