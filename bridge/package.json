@@ -3,7 +3,7 @@
   "private": true,
   "description": "cursor-sdk-bridge runtime for cursor-go-sdk. Run npm install here before using the Go SDK.",
   "dependencies": {
-    "@bufbuild/protobuf": "1.10.0",
+    "@bufbuild/protobuf": "2.12.0",
     "@connectrpc/connect": "1.6.1",
     "@connectrpc/connect-node": "1.6.1",
     "@cursor/sdk": "1.0.18"
