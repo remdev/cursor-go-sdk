@@ -1,8 +1,31 @@
 {
-  "name": "@remdev/cursor-go-sdk-bridge",
-  "private": true,
-  "description": "Node adapter: Connect RPC server over @cursor/sdk for cursor-go-sdk. Run npm install before using the Go SDK.",
+  "name": "@cursor-go-sdk/cursor-sdk-bridge",
+  "version": "1.0.0",
+  "description": "Unofficial Connect RPC bridge over @cursor/sdk for cursor-go-sdk. Prerequisite for the Go SDK.",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/remdev/cursor-go-sdk.git",
+    "directory": "bridge"
+  },
+  "homepage": "https://github.com/remdev/cursor-go-sdk/tree/main/bridge",
+  "bugs": {
+    "url": "https://github.com/remdev/cursor-go-sdk/issues"
+  },
+  "type": "module",
+  "bin": {
+    "cursor-sdk-bridge": "bin/cursor-sdk-bridge"
+  },
+  "files": [
+    "bin",
+    "dist",
+    "vendor"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
   "dependencies": {
+    "@anysphere/proto": "file:vendor/anysphere-proto",
     "@bufbuild/protobuf": "1.10.1",
     "@connectrpc/connect": "1.7.0",
     "@connectrpc/connect-node": "1.7.0",

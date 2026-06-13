@@ -1,7 +1,7 @@
 // Quickstart ports cursor/cookbook sdk/quickstart:
 // https://github.com/cursor/cookbook/blob/main/sdk/quickstart/src/index.ts
 //
-// Requires CURSOR_API_KEY and bridge setup (cd bridge && npm install).
+// Requires CURSOR_API_KEY and cursor-sdk-bridge on PATH (npm install -g @cursor-go-sdk/cursor-sdk-bridge).
 //
 //	go run ./examples/quickstart
 package main

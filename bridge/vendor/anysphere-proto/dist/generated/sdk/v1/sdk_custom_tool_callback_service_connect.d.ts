@@ -1,0 +1,27 @@
+import { CallCustomToolRequest, CallCustomToolResponse } from "./sdk_custom_tool_callback_service_pb.js";
+import { MethodKind } from "@bufbuild/protobuf";
+/**
+ * Custom-tool callbacks from the Node bridge to a Python (or other) host process.
+ *
+ * The bridge forwards in-process SDK custom-tool executions to the host over
+ * `CallCustomTool`, mirroring `@cursor/sdk` `local.customTools` execute
+ * callbacks. Tool metadata crosses CreateAgent/Send options; only execution
+ * round-trips to the host.
+ *
+ * @generated from service sdk.v1.SdkCustomToolCallbackService
+ */
+export declare const SdkCustomToolCallbackService: {
+    readonly typeName: "sdk.v1.SdkCustomToolCallbackService";
+    readonly methods: {
+        /**
+         * @generated from rpc sdk.v1.SdkCustomToolCallbackService.CallCustomTool
+         */
+        readonly callCustomTool: {
+            readonly name: "CallCustomTool";
+            readonly I: typeof CallCustomToolRequest;
+            readonly O: typeof CallCustomToolResponse;
+            readonly kind: MethodKind.Unary;
+        };
+    };
+};
+//# sourceMappingURL=sdk_custom_tool_callback_service_connect.d.ts.map

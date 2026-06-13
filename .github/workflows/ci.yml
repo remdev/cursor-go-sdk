@@ -30,9 +30,12 @@ jobs:
           cache: npm
           cache-dependency-path: bridge/package-lock.json
 
-      - name: Install bridge dependencies
+      - name: Install bridge
         working-directory: bridge
         run: npm ci
+
+      - name: Add bridge to PATH
+        run: echo "$GITHUB_WORKSPACE/bridge/bin" >> "$GITHUB_PATH"
 
       - name: Go vet
         run: |

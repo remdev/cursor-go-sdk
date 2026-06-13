@@ -14,7 +14,7 @@ Thanks for your interest in `cursor-go-sdk`. This is a community project; see [D
 git clone https://github.com/remdev/cursor-go-sdk.git
 cd cursor-go-sdk
 
-cd bridge && npm install && cd ..
+cd bridge && npm ci && npm link && cd ..
 
 export CURSOR_API_KEY="cursor_..."   # optional, for live examples only
 ```
@@ -36,7 +36,7 @@ go vet ./examples/...
 go run ./examples/quickstart
 ```
 
-CI runs the same checks without `CURSOR_API_KEY`. Tests that need a installed bridge skip automatically when `bridge/node_modules` is missing locally before `npm install`.
+CI runs the same checks without `CURSOR_API_KEY`. Bridge tests require `cursor-sdk-bridge` on `PATH` (CI installs via `npm ci` in `bridge/`).
 
 ## Pull requests
 

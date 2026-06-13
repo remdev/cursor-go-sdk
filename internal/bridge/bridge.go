@@ -1,4 +1,4 @@
-// Package bridge launches the Node adapter (bridge/) that wraps @cursor/sdk over Connect.
+// Package bridge launches cursor-sdk-bridge, the npm-installed adapter over @cursor/sdk.
 package bridge
 
 import (
@@ -9,7 +9,6 @@ import (
 	"io"
 	"os"
 	"os/exec"
-	"runtime"
 	"strings"
 	"sync"
 	"syscall"
@@ -278,7 +277,7 @@ func intValue(v any) int {
 	}
 }
 
-// ResolvePath locates the cursor-sdk-bridge launcher.
+// ResolvePath locates the cursor-sdk-bridge launcher installed via npm or env override.
 func ResolvePath() (string, error) {
 	if override := strings.TrimSpace(os.Getenv("CURSOR_SDK_BRIDGE_BIN")); override != "" {
 		if st, err := os.Stat(override); err != nil || st.IsDir() {
@@ -286,43 +285,22 @@ func ResolvePath() (string, error) {
 		}
 		return override, nil
 	}
-	if !optedOutOfBundled() {
-		if cache := embeddedBridgeCacheRoot(); cache != "" {
-			_ = extractEmbeddedBridgeIfNeeded(cache)
-		}
-		root, err := resolveBridgeRoot()
-		if err == nil {
-			if err := ensureNodeRuntime(); err != nil {
-				return "", err
-			}
-			return launcherInRoot(root)
-		}
-		if !embeddedBridgeEnabled() {
-			return "", err
+	if root := strings.TrimSpace(os.Getenv("CURSOR_SDK_BRIDGE_ROOT")); root != "" {
+		if path, err := launcherInRoot(root); err == nil {
+			return path, nil
 		}
 	}
-	if path, err := exec.LookPath("cursor-sdk-bridge"); err == nil {
-		return path, nil
+	if !optedOutOfRemoteBridgeLookup() {
+		if path, err := exec.LookPath("cursor-sdk-bridge"); err == nil {
+			return path, nil
+		}
 	}
-	return "", fmt.Errorf(
-		"unable to locate cursor-sdk-bridge: run `cd bridge && npm install`, set CURSOR_SDK_BRIDGE_ROOT, or set CURSOR_SDK_BRIDGE_BIN",
-	)
+	return "", bridgeNotFoundError()
 }
 
-func embeddedBridgeEnabled() bool {
-	return len(embeddedBridgeTarball()) > 0
-}
-
-func optedOutOfBundled() bool {
+func optedOutOfRemoteBridgeLookup() bool {
 	v := strings.ToLower(strings.TrimSpace(os.Getenv("CURSOR_SDK_USE_REMOTE_BRIDGE")))
 	return v == "1" || v == "true" || v == "yes" || v == "on"
-}
-
-func launcherName() string {
-	if runtime.GOOS == "windows" {
-		return "cursor-sdk-bridge.cmd"
-	}
-	return "cursor-sdk-bridge"
 }
 
 // ParseDiscoveryLine parses a bridge ready line (exported for tests).
