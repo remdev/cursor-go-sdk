@@ -1,4 +1,4 @@
-// Package connect implements the Connect JSON protocol used by cursor-sdk-bridge.
+// Package connect implements the Connect JSON protocol spoken with the bridge/ adapter.
 package connect
 
 import (

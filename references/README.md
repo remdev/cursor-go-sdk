@@ -7,6 +7,7 @@ Curated material for agents working on **cursor-go-sdk**. Read these before impl
 | File | Contents |
 |------|----------|
 | [bridge.md](bridge.md) | Bridge setup, npm deps, env vars |
+| [bridge-trim.md](bridge-trim.md) | Bridge RPC inventory + what was removed for Go |
 | [go-api-map.md](go-api-map.md) | TypeScript / Python → Go API table |
 | [cookbook.md](cookbook.md) | Upstream cookbook examples + Go ports |
 | [typescript-sdk.md](typescript-sdk.md) | TS SDK concepts, runtime model, streaming |

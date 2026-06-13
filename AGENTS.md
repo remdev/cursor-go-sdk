@@ -18,19 +18,25 @@ Go SDK for Cursor agents. Parity target: TypeScript `@cursor/sdk` and Python `cu
 | `cursor/` | Public Go API (`CreateAgent`, `Prompt`, `Run`, …) |
 | `internal/connect/` | Connect JSON RPC client |
 | `internal/bridge/` | Bridge subprocess launcher + path resolution |
-| `bridge/` | Vendored Connect glue + `package.json` npm deps (`@cursor/sdk`) |
+| `bridge/` | Node adapter: Connect server + `package.json` npm deps (`@cursor/sdk`) |
 | `examples/` | Ports of [cursor/cookbook](https://github.com/cursor/cookbook) SDK examples |
 | `references/` | Curated docs for agents (TS SDK, cookbook mapping, bridge) |
 | `.artifacts/` | Local dev junk (venv, npm tarballs) — gitignored |
 
-## Bridge (required for local agents)
+## Bridge (`bridge/`) — `@cursor/sdk` adapter
 
-Go does not embed `@cursor/sdk`. Dependencies are explicit in `bridge/package.json`.
+Go cannot load the npm SDK directly. **`bridge/`** is a Node Connect server that calls `@cursor/sdk` in-process; Go talks to it over loopback.
 
 ```bash
-cd bridge && npm install
-export CURSOR_SDK_BRIDGE_ROOT="$(pwd)/bridge"   # if cwd is not repo root
+cd bridge && npm install   # installs @cursor/sdk + Connect deps
+export CURSOR_SDK_BRIDGE_ROOT="$(pwd)/bridge"
 ```
+
+- **npm runtime:** `bridge/package.json` → `@cursor/sdk`, platform packages, Connect/protobuf.
+- **Adapter glue:** `bridge/dist/` — maintained in **this repo** for Go (see [references/bridge.md](references/bridge.md)).
+- **Go launcher:** `internal/bridge/` — subprocess, discovery, callbacks.
+
+Update path: bump `@cursor/sdk` in `package.json` → `npm install` → adjust `bridge/dist/` if API changed → `go test ./...`.
 
 Or: `go run ./cmd/setup-bridge`
 

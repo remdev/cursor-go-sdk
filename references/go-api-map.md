@@ -65,4 +65,4 @@ Go uses exported struct fields (`APIKey`, `Local`, `Cloud`); wire JSON uses came
 |--------|-----|
 | `Client.launch_bridge(...)` | `cursor.LaunchBridge(ctx, ...)` |
 | `resolve_bridge_path()` | `bridge` package resolves via env + `bridge/` dir |
-| pip wheel bridge | `cd bridge && npm install` |
+| Bridge + `@cursor/sdk` | `cd bridge && npm install` |

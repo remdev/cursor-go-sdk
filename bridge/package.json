@@ -1,7 +1,7 @@
 {
   "name": "@remdev/cursor-go-sdk-bridge",
   "private": true,
-  "description": "cursor-sdk-bridge runtime for cursor-go-sdk. Run npm install here before using the Go SDK.",
+  "description": "Node adapter: Connect RPC server over @cursor/sdk for cursor-go-sdk. Run npm install before using the Go SDK.",
   "dependencies": {
     "@bufbuild/protobuf": "1.10.1",
     "@connectrpc/connect": "1.7.0",

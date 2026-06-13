@@ -7,7 +7,7 @@
 ## What this project is
 
 - A third-party Go client that aims for API parity with the official TypeScript (`@cursor/sdk`) and Python (`cursor-sdk`) packages.
-- A thin Go layer plus a local **bridge** process that runs the official `@cursor/sdk` npm package for local agent execution.
+- A third-party Go client with a Node adapter that drives the official [`@cursor/sdk`](https://www.npmjs.com/package/@cursor/sdk) npm package over Connect.
 
 ## What this project is not
 

@@ -10,7 +10,7 @@
 
 Go client for [Cursor agents](https://cursor.com/docs/sdk/typescript). API parity with TypeScript `@cursor/sdk` and Python `cursor-sdk`.
 
-Local agents run through **cursor-sdk-bridge** — a Node process in [`bridge/`](bridge/) that wraps `@cursor/sdk`. Install bridge dependencies once; the Go library launches and talks to it over Connect.
+Local agents run through **`bridge/`** — a Node adapter in this repo that wraps [`@cursor/sdk`](https://www.npmjs.com/package/@cursor/sdk). Install npm dependencies once; Go launches the adapter and talks to it over Connect.
 
 **Requirements:** Go 1.26+, Node.js >= 18, npm.
 
@@ -166,7 +166,7 @@ if err != nil {
 - [Contributing](CONTRIBUTING.md)
 - [Security policy](SECURITY.md)
 - [API mapping (TS/Python → Go)](references/go-api-map.md)
-- [Bridge setup](references/bridge.md)
+- [Bridge adapter (`@cursor/sdk`)](references/bridge.md)
 - [AGENTS.md](AGENTS.md) — contributor and agent notes
 
 ## License

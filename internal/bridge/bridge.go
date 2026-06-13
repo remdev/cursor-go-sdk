@@ -1,4 +1,4 @@
-// Package bridge launches and manages the cursor-sdk-bridge subprocess.
+// Package bridge launches the Node adapter (bridge/) that wraps @cursor/sdk over Connect.
 package bridge
 
 import (
@@ -38,11 +38,6 @@ type Bridge struct {
 	stderr   io.ReadCloser
 	mu       sync.Mutex
 	closed   bool
-
-	toolCallbackURL   string
-	toolCallbackToken string
-	storeCallbackURL  string
-	storeCallbackToken string
 }
 
 // LaunchConfig configures bridge startup.
@@ -55,8 +50,6 @@ type LaunchConfig struct {
 	Timeout     time.Duration
 	ExtraArgs   []string
 	LocalStore  map[string]any
-	StoreCallbackURL   string
-	StoreCallbackToken string
 	ToolCallbackURL    string
 	ToolCallbackToken  string
 }
@@ -85,9 +78,6 @@ func Launch(ctx context.Context, cfg LaunchConfig) (*Bridge, error) {
 	}
 	if cfg.Port > 0 {
 		argv = append(argv, "--port", fmt.Sprintf("%d", cfg.Port))
-	}
-	if cfg.StoreCallbackURL != "" {
-		argv = append(argv, "--store-callback-url", cfg.StoreCallbackURL, "--store-callback-auth-token", cfg.StoreCallbackToken)
 	}
 	if cfg.ToolCallbackURL != "" {
 		argv = append(argv, "--tool-callback-url", cfg.ToolCallbackURL, "--tool-callback-auth-token", cfg.ToolCallbackToken)
@@ -119,13 +109,9 @@ func Launch(ctx context.Context, cfg LaunchConfig) (*Bridge, error) {
 		return nil, err
 	}
 	return &Bridge{
-		Endpoint:          endpoint,
-		cmd:               cmd,
-		stderr:            stderr,
-		toolCallbackURL:   cfg.ToolCallbackURL,
-		toolCallbackToken: cfg.ToolCallbackToken,
-		storeCallbackURL:  cfg.StoreCallbackURL,
-		storeCallbackToken: cfg.StoreCallbackToken,
+		Endpoint: endpoint,
+		cmd:      cmd,
+		stderr:   stderr,
 	}, nil
 }
 
