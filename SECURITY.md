@@ -23,7 +23,7 @@ We aim to acknowledge reports within a few business days.
 In scope:
 
 - This Go module (`cursor/`, `internal/`)
-- The vendored bridge launcher and Connect glue in `bridge/` (excluding third-party code in `node_modules/`)
+- The vendored Node adapter in `bridge/` (Connect glue + launcher; runtime from npm `@cursor/sdk`)
 
 Out of scope:
 

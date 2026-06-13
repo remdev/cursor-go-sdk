@@ -3,64 +3,39 @@ package bridge_test
 import (
 	"os"
 	"path/filepath"
-	"runtime"
+	"strings"
 	"testing"
 
 	"github.com/remdev/cursor-go-sdk/internal/bridge"
 )
 
-func TestCurrentPlatformMatchesRuntime(t *testing.T) {
-	t.Parallel()
-	_, err := bridge.EnsureInstalledForTestPlatform()
-	if err != nil {
-		t.Fatalf("platform mapping: %v", err)
-	}
-}
-
-func TestNpmPlatformPackageDarwinARM64(t *testing.T) {
-	t.Parallel()
-	if runtime.GOOS != "darwin" || runtime.GOARCH != "arm64" {
-		t.Skip("platform-specific assertion")
-	}
-	pkg, err := bridge.NpmPlatformPackageForTest()
+func TestResolvePathFromBridgeRoot(t *testing.T) {
+	repoBridge, err := filepath.Abs(filepath.Join("..", "..", "bridge"))
 	if err != nil {
 		t.Fatal(err)
 	}
-	if pkg != "@cursor/sdk-darwin-arm64" {
-		t.Fatalf("got %q", pkg)
+	if _, err := os.Stat(filepath.Join(repoBridge, "package.json")); err != nil {
+		t.Skip("bridge/ not present")
 	}
-}
+	t.Setenv("CURSOR_SDK_BRIDGE_BIN", "")
+	t.Setenv("CURSOR_SDK_BRIDGE_ROOT", repoBridge)
+	t.Setenv("PATH", t.TempDir())
 
-func TestModuleBridgeDir(t *testing.T) {
-	dir := bridge.ModuleBridgeDirForTest()
-	if dir == "" {
-		t.Fatal("empty module bridge dir")
-	}
-	if _, err := os.Stat(filepath.Join(dir, "package.json")); err != nil {
-		t.Fatalf("bridge/package.json: %v", err)
-	}
-}
-
-func TestValidBridgeRootRequiresNodeModules(t *testing.T) {
-	root := t.TempDir()
-	if err := os.WriteFile(filepath.Join(root, "manifest.json"), []byte(`{"sdkVersion":"1.0.18"}`), 0o644); err != nil {
-		t.Fatal(err)
-	}
-	if bridge.ValidBridgeRootForTest(root) {
-		t.Fatal("expected invalid without node_modules")
-	}
-}
-
-func TestResolvePathFromRepoBridge(t *testing.T) {
-	root := bridge.ModuleBridgeDirForTest()
-	if !bridge.ValidBridgeRootForTest(root) {
-		t.Skip("run `cd bridge && npm install` to enable integration test")
-	}
-	path, err := bridge.ResolvePath()
+	resolved, err := bridge.ResolvePath()
 	if err != nil {
 		t.Fatal(err)
 	}
-	if path == "" {
-		t.Fatal("empty bridge path")
+	if !strings.Contains(resolved, "cursor-sdk-bridge") {
+		t.Fatalf("unexpected path: %q", resolved)
+	}
+}
+
+func TestResolvePathMissingBridge(t *testing.T) {
+	t.Setenv("PATH", t.TempDir())
+	t.Setenv("CURSOR_SDK_BRIDGE_BIN", "")
+	t.Setenv("CURSOR_SDK_BRIDGE_ROOT", "")
+	_, err := bridge.ResolvePath()
+	if err == nil {
+		t.Fatal("expected error when bridge is missing")
 	}
 }

@@ -6,7 +6,7 @@
 //	go run ./examples/coding-agent-cli -- "Explain the auth flow"
 //	printf "Review changes\n" | go run ./examples/coding-agent-cli
 //
-// Requires CURSOR_API_KEY and bridge setup (cd bridge && npm install).
+// Requires CURSOR_API_KEY and cursor-sdk-bridge on PATH (npm install -g @cursor-go-sdk/cursor-sdk-bridge).
 package main
 
 import (

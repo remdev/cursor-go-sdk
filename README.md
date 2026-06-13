@@ -10,40 +10,29 @@
 
 Go client for [Cursor agents](https://cursor.com/docs/sdk/typescript). API parity with TypeScript `@cursor/sdk` and Python `cursor-sdk`.
 
-Local agents run through **cursor-sdk-bridge** — a Node process in [`bridge/`](bridge/) that wraps `@cursor/sdk`. Install bridge dependencies once; the Go library launches and talks to it over Connect.
+Local agents run through **`cursor-sdk-bridge`** — a Node adapter over [`@cursor/sdk`](https://www.npmjs.com/package/@cursor/sdk). Install the bridge once; the Go SDK launches it automatically.
 
-**Requirements:** Go 1.26+, Node.js >= 18, npm.
+**Requirements:** Go 1.26+, Node.js >= 18, npm, [`@cursor-go-sdk/cursor-sdk-bridge`](bridge/) on `PATH`.
 
 ## Install
 
 ```bash
+npm install -g @cursor-go-sdk/cursor-sdk-bridge
 go get github.com/remdev/cursor-go-sdk/cursor
-```
-
-Set up the bridge (from a checkout of this repo, or copy the `bridge/` directory):
-
-```bash
-cd bridge && npm install
-```
-
-If your working directory is not the repo root:
-
-```bash
-export CURSOR_SDK_BRIDGE_ROOT="/path/to/bridge"
-```
-
-Helper:
-
-```bash
-go run github.com/remdev/cursor-go-sdk/cmd/setup-bridge
 ```
 
 Check readiness:
 
 ```go
 if err := cursor.EnsureBridgeInstalled(ctx); err != nil {
-    // bridge or node_modules missing
+    // cursor-sdk-bridge not on PATH
 }
+```
+
+Development from a clone:
+
+```bash
+cd bridge && npm ci && npm run build && npm link
 ```
 
 ## Authentication
@@ -133,12 +122,12 @@ go run ./examples/coding-agent-tui
 | Variable | Purpose |
 |----------|---------|
 | `CURSOR_API_KEY` | API key |
-| `CURSOR_SDK_BRIDGE_ROOT` | Bridge directory (contains `node_modules/`) |
 | `CURSOR_SDK_BRIDGE_BIN` | Override bridge launcher binary |
+| `CURSOR_SDK_BRIDGE_ROOT` | Directory with `bin/cursor-sdk-bridge` |
 | `CURSOR_SDK_NODE_BIN` | Override Node.js binary |
 | `CURSOR_SDK_BRIDGE_URL` | Connect to an existing bridge |
 | `CURSOR_SDK_BRIDGE_TOKEN` | Token for an existing bridge |
-| `CURSOR_SDK_USE_REMOTE_BRIDGE` | Skip local bridge discovery |
+| `CURSOR_SDK_USE_REMOTE_BRIDGE` | Skip local bridge discovery on PATH |
 
 Connect to a bridge that is already running:
 
@@ -166,7 +155,7 @@ if err != nil {
 - [Contributing](CONTRIBUTING.md)
 - [Security policy](SECURITY.md)
 - [API mapping (TS/Python → Go)](references/go-api-map.md)
-- [Bridge setup](references/bridge.md)
+- [Bridge npm package](references/bridge.md)
 - [AGENTS.md](AGENTS.md) — contributor and agent notes
 
 ## License

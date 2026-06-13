@@ -7,7 +7,7 @@ Go SDK for Cursor agents. Parity target: TypeScript `@cursor/sdk` and Python `cu
 ## Before coding
 
 1. Read [references/README.md](references/README.md) — index of local docs and upstream links.
-2. Bridge must be installed: `cd bridge && npm install` (see [references/bridge.md](references/bridge.md)).
+2. Bridge prerequisite: `npm install -g @cursor-go-sdk/cursor-sdk-bridge` or `cd bridge && npm ci && npm run build && npm link` (see [references/bridge.md](references/bridge.md)).
 3. Set `CURSOR_API_KEY` for live runs.
 4. Run `go test ./...` after changes.
 
@@ -18,21 +18,24 @@ Go SDK for Cursor agents. Parity target: TypeScript `@cursor/sdk` and Python `cu
 | `cursor/` | Public Go API (`CreateAgent`, `Prompt`, `Run`, …) |
 | `internal/connect/` | Connect JSON RPC client |
 | `internal/bridge/` | Bridge subprocess launcher + path resolution |
-| `bridge/` | Vendored Connect glue + `package.json` npm deps (`@cursor/sdk`) |
+| `bridge/` | npm package `@cursor-go-sdk/cursor-sdk-bridge` — Connect server + `@cursor/sdk` |
 | `examples/` | Ports of [cursor/cookbook](https://github.com/cursor/cookbook) SDK examples |
 | `references/` | Curated docs for agents (TS SDK, cookbook mapping, bridge) |
 | `.artifacts/` | Local dev junk (venv, npm tarballs) — gitignored |
 
-## Bridge (required for local agents)
+## Bridge — npm prerequisite
 
-Go does not embed `@cursor/sdk`. Dependencies are explicit in `bridge/package.json`.
+Go cannot load the npm SDK directly. **`@cursor-go-sdk/cursor-sdk-bridge`** installs the `cursor-sdk-bridge` binary; Go launches it and talks Connect over loopback.
 
 ```bash
-cd bridge && npm install
-export CURSOR_SDK_BRIDGE_ROOT="$(pwd)/bridge"   # if cwd is not repo root
+cd bridge && npm ci && npm run build && npm link
 ```
 
-Or: `go run ./cmd/setup-bridge`
+- **npm package:** `bridge/package.json` → `@cursor-go-sdk/cursor-sdk-bridge`, `@cursor/sdk`, Connect/protobuf.
+- **Adapter glue:** `bridge/src/` — maintained in **this repo** (see [references/bridge.md](references/bridge.md)).
+- **Go launcher:** `internal/bridge/` — subprocess, discovery, callbacks.
+
+Update path: bump `@cursor/sdk` in `package.json` → publish npm version → adjust `bridge/src/` if API changed → `npm run build` → `go test ./...`.
 
 Requires **Node.js >= 18**. Override: `CURSOR_SDK_BRIDGE_BIN`, `CURSOR_SDK_BRIDGE_ROOT`, `CURSOR_SDK_NODE_BIN`.
 
@@ -76,7 +79,7 @@ Other cookbook projects (app-builder, agent-kanban, dag-task-runner) are web/UI-
 ```bash
 go test ./...
 go build -o /dev/null ./examples/...
-# Live (needs API key + bridge):
+# Live (needs API key + bridge on PATH):
 go run ./examples/quickstart
 ```
 

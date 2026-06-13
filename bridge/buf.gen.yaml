@@ -1,0 +1,10 @@
+version: v1
+plugins:
+  - plugin: es
+    path: node_modules/@bufbuild/protoc-gen-es/bin/protoc-gen-es
+    out: gen/ts
+    opt: target=js+dts
+  - plugin: connect-es
+    path: node_modules/@connectrpc/protoc-gen-connect-es/bin/protoc-gen-connect-es
+    out: gen/ts
+    opt: target=js+dts

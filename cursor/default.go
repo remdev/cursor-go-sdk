@@ -64,7 +64,7 @@ func CloseDefaultClient() error {
 	return err
 }
 
-// EnsureBridgeInstalled reports whether bridge/ has npm dependencies installed.
+// EnsureBridgeInstalled reports whether cursor-sdk-bridge is installed (npm global/link or env).
 func EnsureBridgeInstalled(ctx context.Context) error {
 	return bridge.EnsureInstalled(ctx)
 }

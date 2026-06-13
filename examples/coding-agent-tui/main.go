@@ -6,7 +6,7 @@
 //	export CURSOR_API_KEY=...
 //	go run ./examples/coding-agent-tui
 //
-// Requires bridge setup (cd bridge && npm install) and a TTY.
+// Requires cursor-sdk-bridge on PATH (npm install -g @cursor-go-sdk/cursor-sdk-bridge) and a TTY.
 package main
 
 import (

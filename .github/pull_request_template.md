@@ -6,7 +6,7 @@
 
 - [ ] `go test ./...`
 - [ ] `go vet ./...`
-- [ ] Bridge: `cd bridge && npm ci` (if bridge files changed)
+- [ ] Bridge: `cd bridge && npm ci && npm run build` (if bridge files changed)
 - [ ] Manual live test with `CURSOR_API_KEY` (if agent/runtime behavior changed)
 
 ## Checklist

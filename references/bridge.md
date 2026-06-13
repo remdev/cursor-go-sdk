@@ -1,53 +1,69 @@
 # Bridge runtime
 
-The Go SDK talks to **cursor-sdk-bridge** (Connect RPC on loopback). The bridge glue lives in `bridge/`; runtime deps come from npm.
+`@cursor-go-sdk/cursor-sdk-bridge` is the **Node adapter** that lets Go call [`@cursor/sdk`](https://www.npmjs.com/package/@cursor/sdk) over Connect JSON on loopback. It is a **prerequisite** for the Go SDK, distributed as an npm package with a `cursor-sdk-bridge` binary.
 
-## Install (once per machine / clone)
-
-```bash
-cd bridge && npm install
+```
+Go (cursor/)  ──Connect JSON (proto/sdk.v1)──►  cursor-sdk-bridge  ──@cursor/sdk──►  agents
 ```
 
-Dependencies are declared in `bridge/package.json`:
+Protobuf schema is owned in [`bridge/proto/`](../bridge/proto/). TypeScript stubs: `npm run generate`.
 
-- `@cursor/sdk@1.0.18` — agent runtime (same as TypeScript SDK)
-- `@cursor/sdk-<platform>@1.0.18` — optional native helpers (rg, sandbox)
+## Install (prerequisite)
+
+```bash
+npm install -g @cursor-go-sdk/cursor-sdk-bridge
+```
 
 Requires **Node.js >= 18** and **npm**.
 
-Helper:
+Development from this repo:
 
 ```bash
-go run ./cmd/setup-bridge
-export CURSOR_SDK_BRIDGE_ROOT="$(go list -f '{{.Dir}}' -m github.com/remdev/cursor-go-sdk)/bridge"
+cd bridge && npm ci && npm run build && npm link
 ```
+
+Verify:
+
+```bash
+cursor-sdk-bridge --help
+```
+
+```go
+if err := cursor.EnsureBridgeInstalled(ctx); err != nil { /* bridge not on PATH */ }
+```
+
+## What the adapter does
+
+The Connect server in `bridge/src/` (compiled to `dist/`) translates RPC requests into `@cursor/sdk` calls:
+
+- **Local agents:** tools, MCP, store, `api2.cursor.sh` — all inside the npm SDK
+- **Cloud agents:** `api.cursor.com` via the npm SDK
+
+This is **not** the `cursor-agent` CLI.
+
+Custom tools: Go starts a loopback `ToolCallbackServer`; bridge forwards tool execution to Go via `--tool-callback-*`.
 
 ## Environment
 
 | Variable | Purpose |
 |----------|---------|
-| `CURSOR_SDK_BRIDGE_ROOT` | Directory with `bin/`, `dist/`, `node_modules/` |
-| `CURSOR_SDK_BRIDGE_BIN` | Path to launcher script (skips root discovery) |
+| `CURSOR_SDK_BRIDGE_BIN` | Override launcher path |
+| `CURSOR_SDK_BRIDGE_ROOT` | Directory with `bin/cursor-sdk-bridge` (dev/local install) |
 | `CURSOR_SDK_NODE_BIN` | Node binary for launcher |
-| `CURSOR_SDK_USE_REMOTE_BRIDGE=1` | Skip bundled bridge lookup; use PATH only |
+| `CURSOR_SDK_BRIDGE_URL` | Connect to an existing bridge (skip local launch) |
+| `CURSOR_SDK_BRIDGE_TOKEN` | Token for an existing bridge |
+| `CURSOR_SDK_USE_REMOTE_BRIDGE=1` | Skip `PATH` lookup; use URL or explicit bin |
 
-## Discovery order (Go)
+## Go discovery order
 
 1. `CURSOR_SDK_BRIDGE_BIN`
 2. `CURSOR_SDK_BRIDGE_ROOT`
-3. `bridge/` next to module source (GOMODCACHE or checkout)
-4. `bridge/` in cwd or ancestors
-5. `cursor-sdk-bridge` on PATH
+3. `cursor-sdk-bridge` on `PATH`
 
-## What bridge calls
+## Maintenance
 
-Bridge is a thin Connect server over `@cursor/sdk` in-process:
+- **Bump runtime:** edit `bridge/package.json` → publish new npm version → test Go SDK.
+- **Bump adapter:** edit `bridge/src/` when Connect proto or `@cursor/sdk` API changes; run `npm run generate && npm run build`.
+- **Trim inventory:** [bridge-trim.md](bridge-trim.md).
 
-- **Local**: agent loop on your machine → tools, MCP, `api2.cursor.sh`
-- **Cloud**: `api.cursor.com` `/v1/agents`, …
-
-Not the same as `cursor-agent` CLI.
-
-## Dev artifacts
-
-Local experiments (venv, downloaded npm tarballs, `fetch-bridge` for `-tags embedbridge`) go in `.artifacts/` (gitignored). Embed helper: `.artifacts/tools/fetch-bridge`.
+Adapter source: [../bridge/README.md](../bridge/README.md).

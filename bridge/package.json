@@ -1,11 +1,40 @@
 {
-  "name": "@remdev/cursor-go-sdk-bridge",
-  "private": true,
-  "description": "cursor-sdk-bridge runtime for cursor-go-sdk. Run npm install here before using the Go SDK.",
+  "name": "@cursor-go-sdk/cursor-sdk-bridge",
+  "version": "1.0.0",
+  "description": "Unofficial Connect RPC bridge over @cursor/sdk for cursor-go-sdk. Prerequisite for the Go SDK.",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/remdev/cursor-go-sdk.git",
+    "directory": "bridge"
+  },
+  "homepage": "https://github.com/remdev/cursor-go-sdk/tree/main/bridge",
+  "bugs": {
+    "url": "https://github.com/remdev/cursor-go-sdk/issues"
+  },
+  "type": "module",
+  "scripts": {
+    "generate": "buf generate",
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "prepublishOnly": "npm run generate && npm run build"
+  },
+  "bin": {
+    "cursor-sdk-bridge": "bin/cursor-sdk-bridge"
+  },
+  "files": [
+    "bin",
+    "dist",
+    "gen",
+    "proto"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
   "dependencies": {
-    "@bufbuild/protobuf": "1.10.0",
-    "@connectrpc/connect": "1.6.1",
-    "@connectrpc/connect-node": "1.6.1",
+    "@bufbuild/protobuf": "1.10.1",
+    "@connectrpc/connect": "1.7.0",
+    "@connectrpc/connect-node": "1.7.0",
     "@cursor/sdk": "1.0.18"
   },
   "optionalDependencies": {
@@ -14,6 +43,13 @@
     "@cursor/sdk-linux-arm64": "1.0.18",
     "@cursor/sdk-linux-x64": "1.0.18",
     "@cursor/sdk-win32-x64": "1.0.18"
+  },
+  "devDependencies": {
+    "@bufbuild/buf": "^1.50.0",
+    "@bufbuild/protoc-gen-es": "1.10.1",
+    "@connectrpc/protoc-gen-connect-es": "1.7.0",
+    "@types/node": "^22.10.0",
+    "typescript": "^5.8.3"
   },
   "engines": {
     "node": ">=18"
