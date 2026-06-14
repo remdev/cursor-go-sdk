@@ -7,11 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-### Added
-
 ### Changed
 
-### Fixed
+- Minimum Go version for the root module lowered to 1.23 (`iter.Seq2` streaming API); TUI example requires Go 1.24.2 (`charmbracelet/bubbles`).
 
 ## [0.1.0] - 2026-06-15
 

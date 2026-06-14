@@ -10,7 +10,7 @@ Go client for [Cursor agents](https://cursor.com/docs/sdk/typescript). API parit
 
 Local agents run through **`cursor-sdk-bridge`** — a Node adapter over [`@cursor/sdk`](https://www.npmjs.com/package/@cursor/sdk). Install the bridge once; the Go SDK launches it automatically.
 
-**Requirements:** Go 1.26+, Node.js >= 18, npm, [`@cursor-go-sdk/cursor-sdk-bridge`](bridge/) `>= 0.0.2` on `PATH`.
+**Requirements:** Go 1.23+ (TUI example: Go 1.24.2+), Node.js >= 18, npm, [`@cursor-go-sdk/cursor-sdk-bridge`](bridge/) `>= 0.0.2` on `PATH`.
 
 ## How is this different?
 

@@ -1,3 +1,3 @@
 module github.com/remdev/cursor-go-sdk
 
-go 1.26
+go 1.23

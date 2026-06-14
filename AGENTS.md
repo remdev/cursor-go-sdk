@@ -69,7 +69,7 @@ Other cookbook projects (app-builder, agent-kanban, dag-task-runner) are web/UI-
 
 ## Conventions
 
-- Go 1.26+, module `github.com/remdev/cursor-go-sdk`
+- Go 1.23+, module `github.com/remdev/cursor-go-sdk` (TUI example: Go 1.24.2+)
 - Wire encoding: protobuf JSON field names via `ToWire()` / `wire.go`
 - Errors: startup → typed `*cursor.AgentError`; run failure → `result.Status == "error"`
 - Do not commit `bridge/node_modules/` or `.artifacts/` contents

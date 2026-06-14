@@ -32,7 +32,7 @@ body:
     id: versions
     attributes:
       label: Versions
-      placeholder: "go 1.26, @cursor/sdk 1.0.18, cursor-go-sdk commit or tag"
+      placeholder: "go 1.23, @cursor/sdk 1.0.18, cursor-go-sdk commit or tag"
     validations:
       required: false
 

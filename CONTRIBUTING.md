@@ -4,7 +4,7 @@ Thanks for your interest in `cursor-go-sdk`. See [DISCLAIMER.md](DISCLAIMER.md) 
 
 ## Prerequisites
 
-- Go 1.26+ (see `go.mod`)
+- Go 1.23+ (see `go.mod`; TUI example in `examples/coding-agent-tui` requires Go 1.24.2+)
 - Node.js >= 18 and npm (for the bridge runtime)
 - A [Cursor API key](https://cursor.com/docs) for manual live testing
 

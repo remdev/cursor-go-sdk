@@ -48,7 +48,15 @@ func TestLocalBridgeDirFromEnv(t *testing.T) {
 	}
 
 	t.Setenv("CURSOR_SDK_BRIDGE_ROOT", bridgeDir)
-	t.Chdir(t.TempDir())
+	wd, err := os.Getwd()
+	if err != nil {
+		t.Fatal(err)
+	}
+	tmp := t.TempDir()
+	if err := os.Chdir(tmp); err != nil {
+		t.Fatal(err)
+	}
+	t.Cleanup(func() { _ = os.Chdir(wd) })
 
 	got, err := bridge.LocalBridgeDirForTest(bridge.SetupOptions{Local: true})
 	if err != nil {
