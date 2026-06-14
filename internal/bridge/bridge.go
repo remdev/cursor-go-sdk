@@ -60,11 +60,11 @@ func Launch(ctx context.Context, cfg LaunchConfig) (*Bridge, error) {
 	}
 	argv := cfg.Command
 	if len(argv) == 0 {
-		path, err := ResolvePath()
+		launchArgv, err := ResolveLaunchArgv()
 		if err != nil {
 			return nil, err
 		}
-		argv = []string{path}
+		argv = launchArgv
 	}
 	if cfg.Workspace != "" {
 		argv = append(argv, "--workspace", cfg.Workspace)
@@ -83,7 +83,7 @@ func Launch(ctx context.Context, cfg LaunchConfig) (*Bridge, error) {
 	}
 	argv = append(argv, cfg.ExtraArgs...)
 
-	cmd := exec.CommandContext(ctx, argv[0], argv[1:]...)
+	cmd := exec.Command(argv[0], argv[1:]...)
 	cmd.Env = bridgeEnv()
 	cmd.Stdout = io.Discard
 	stderr, err := cmd.StderrPipe()
@@ -95,7 +95,7 @@ func Launch(ctx context.Context, cfg LaunchConfig) (*Bridge, error) {
 		return nil, fmt.Errorf("start bridge: %w", err)
 	}
 
-	discovery, err := readDiscovery(stderr, cmd, cfg.Timeout)
+	discovery, err := readDiscovery(ctx, stderr, cmd, cfg.Timeout)
 	if err != nil {
 		terminate(cmd)
 		stderr.Close()
@@ -148,11 +148,14 @@ func setDefaultEnv(env []string, key, value string) []string {
 	return append(env, prefix+value)
 }
 
-func readDiscovery(stderr io.Reader, cmd *exec.Cmd, timeout time.Duration) (map[string]any, error) {
+func readDiscovery(ctx context.Context, stderr io.Reader, cmd *exec.Cmd, timeout time.Duration) (map[string]any, error) {
 	deadline := time.Now().Add(timeout)
 	scanner := bufio.NewScanner(stderr)
 	var lines []string
 	for time.Now().Before(deadline) {
+		if ctx.Err() != nil {
+			return nil, ctx.Err()
+		}
 		if cmd.ProcessState != nil && cmd.ProcessState.Exited() {
 			break
 		}
@@ -277,12 +280,24 @@ func intValue(v any) int {
 	}
 }
 
-// ResolvePath locates the cursor-sdk-bridge launcher installed via npm or env override.
+// ResolvePath locates the cursor-sdk-bridge entrypoint on PATH or via env overrides.
 func ResolvePath() (string, error) {
+	raw, err := findBridgeLauncher()
+	if err != nil {
+		return "", err
+	}
+	entry, err := resolveBridgeEntry(raw)
+	if err != nil {
+		return "", err
+	}
+	if err := ensureBridgeVersion(entry); err != nil {
+		return "", err
+	}
+	return entry, nil
+}
+
+func findBridgeLauncher() (string, error) {
 	if override := strings.TrimSpace(os.Getenv("CURSOR_SDK_BRIDGE_BIN")); override != "" {
-		if st, err := os.Stat(override); err != nil || st.IsDir() {
-			return "", fmt.Errorf("CURSOR_SDK_BRIDGE_BIN=%q does not point to a file", override)
-		}
 		return override, nil
 	}
 	if root := strings.TrimSpace(os.Getenv("CURSOR_SDK_BRIDGE_ROOT")); root != "" {

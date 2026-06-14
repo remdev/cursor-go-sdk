@@ -26,8 +26,10 @@ func dropEmpty(m map[string]any, preserveEmptyStringMaps ...string) map[string]a
 				continue
 			}
 		case map[string]any:
-			if len(t) == 0 && preserve[k] == struct{}{} {
-				out[k] = t
+			if len(t) == 0 {
+				if _, ok := preserve[k]; ok {
+					out[k] = t
+				}
 				continue
 			}
 			nested := dropEmpty(t, preserveEmptyStringMaps...)
@@ -152,4 +154,12 @@ func deepMerge(base, overrides map[string]any) map[string]any {
 
 func stripEmptyMessage(m map[string]any) map[string]any {
 	return dropEmpty(m, "envVars", "headers")
+}
+
+func hasCloudOptions(opts map[string]any) bool {
+	if opts == nil {
+		return false
+	}
+	cloud, ok := opts["cloud"].(map[string]any)
+	return ok && len(cloud) > 0
 }

@@ -14,7 +14,7 @@ Thanks for your interest in `cursor-go-sdk`. This is a community project; see [D
 git clone https://github.com/remdev/cursor-go-sdk.git
 cd cursor-go-sdk
 
-cd bridge && npm ci && npm run build && npm link && cd ..
+go run ./cmd/setup --local
 
 # After editing bridge/proto/*.proto:
 # cd bridge && npm run generate && npm run build
@@ -28,6 +28,12 @@ export CURSOR_API_KEY="cursor_..."   # optional, for live examples only
 # Unit tests (root module)
 go test ./...
 
+# Local e2e (real API key; not run in CI)
+export CURSOR_E2E=1
+export CURSOR_API_KEY="cursor_..."
+./scripts/run-e2e.sh
+# or: go test -tags=e2e -count=1 -timeout=5m -v ./e2e/...
+
 # TUI example module
 cd examples/coding-agent-tui && go test ./... && cd ../..
 
@@ -39,7 +45,7 @@ go vet ./examples/...
 go run ./examples/quickstart
 ```
 
-CI runs the same checks without `CURSOR_API_KEY`. Bridge tests require `cursor-sdk-bridge` on `PATH` (CI runs `npm ci && npm run build` in `bridge/`).
+CI runs the same checks without `CURSOR_API_KEY`. Bridge tests require `cursor-sdk-bridge` on `PATH` (CI runs `npm ci && npm run build` in `bridge/`). E2e tests live in [`e2e/`](e2e/) and require `CURSOR_E2E=1`, `-tags=e2e`, and a valid API key.
 
 ## Pull requests
 

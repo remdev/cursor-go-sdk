@@ -1,6 +1,6 @@
 {
   "name": "@cursor-go-sdk/cursor-sdk-bridge",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Unofficial Connect RPC bridge over @cursor/sdk for cursor-go-sdk. Prerequisite for the Go SDK.",
   "license": "MIT",
   "repository": {
@@ -20,10 +20,9 @@
     "prepublishOnly": "npm run generate && npm run build"
   },
   "bin": {
-    "cursor-sdk-bridge": "bin/cursor-sdk-bridge"
+    "cursor-sdk-bridge": "dist/bin/cursor-sdk-bridge.js"
   },
   "files": [
-    "bin",
     "dist",
     "gen",
     "proto"

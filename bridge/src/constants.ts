@@ -1,5 +1,5 @@
 export const CURSOR_SDK_BRIDGE_PROTOCOL_VERSION = "sdk.v1";
-export const CURSOR_SDK_BRIDGE_VERSION = "0.0.1";
+export const CURSOR_SDK_BRIDGE_VERSION = "0.0.2";
 export const CURSOR_SDK_BRIDGE_CAPABILITIES = [
     "agent.create",
     "agent.resume",

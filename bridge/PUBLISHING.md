@@ -21,7 +21,7 @@ npm run build
 npm publish --dry-run --access public
 ```
 
-Review the tarball contents: `bin/`, `dist/`, `gen/`, `proto/` must be included.
+Review the tarball contents: `dist/`, `gen/`, `proto/` must be included. The npm `bin` field points at `dist/bin/cursor-sdk-bridge.js` (no shell wrapper in the published package).
 
 Regenerate after `.proto` changes:
 
@@ -41,7 +41,7 @@ npm publish --access public
 ## After publish
 
 ```bash
-npm install -g @cursor-go-sdk/cursor-sdk-bridge
+npm install -g @cursor-go-sdk/cursor-sdk-bridge@0.0.2
 cursor-sdk-bridge --help
 ```
 

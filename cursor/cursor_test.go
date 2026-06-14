@@ -69,4 +69,18 @@ func TestAgentOptionsWire(t *testing.T) {
 	if !ok || len(cwd) != 1 || cwd[0] != "/tmp" {
 		t.Fatalf("cwd=%v", local["cwd"])
 	}
+	if _, ok := w["cloud"]; ok {
+		t.Fatalf("cloud should be omitted for local-only agents, wire=%v", w)
+	}
+}
+
+func TestLocalAgentOptionsWireOmitsCloud(t *testing.T) {
+	opts := cursor.AgentOptions{
+		Model: "composer-2.5",
+		Local: cursor.LocalOptions("/tmp"),
+	}
+	w := opts.ToWire()
+	if _, ok := w["cloud"]; ok {
+		t.Fatalf("cloud should be omitted, wire=%v", w)
+	}
 }

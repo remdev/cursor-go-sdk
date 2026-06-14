@@ -251,7 +251,7 @@ func (c *Client) createAgent(ctx context.Context, opts AgentOptions, idempotency
 		}
 	}
 	req := map[string]any{"options": stripEmptyMessage(wire)}
-	if wire["cloud"] != nil {
+	if opts.Cloud != nil {
 		if idempotencyKey == "" {
 			idempotencyKey = newID()
 		}
@@ -510,9 +510,9 @@ func isCloudAgentRPC(method string, msg map[string]any) bool {
 	agentID := stringField(msg, "agentId")
 	switch method {
 	case "CreateAgent":
-		return opts != nil && opts["cloud"] != nil
+		return opts != nil && hasCloudOptions(opts)
 	case "ResumeAgent":
-		return stringsHasPrefix(agentID, "bc-") || (opts != nil && opts["cloud"] != nil)
+		return stringsHasPrefix(agentID, "bc-") || (opts != nil && hasCloudOptions(opts))
 	case "GetAgent", "ArchiveAgent", "UnarchiveAgent", "DeleteAgent",
 		"ListAgentMessages", "ListArtifacts", "DownloadArtifact":
 		return stringsHasPrefix(agentID, "bc-")
