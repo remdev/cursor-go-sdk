@@ -19,8 +19,10 @@ func TestSemverAtLeast(t *testing.T) {
 		{"0.0.1", "0.0.2", false},
 		{"1.0.0", "0.0.2", true},
 		{"0.0.2+meta", "0.0.2", true},
-		{"0.0.2-beta", "0.0.2", true},
+		{"0.0.2-beta", "0.0.2", false},
+		{"0.0.3-beta", "0.0.2", true},
 		{"0.0.1-rc1", "0.0.2", false},
+		{"0.0.2-rc2", "0.0.2-rc1", true},
 		{"v0.0.3", "0.0.2", true},
 	}
 	for _, tc := range cases {

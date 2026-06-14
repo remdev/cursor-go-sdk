@@ -37,10 +37,11 @@ func Setup(ctx context.Context, opts SetupOptions) error {
 }
 
 func setupGlobal(ctx context.Context, version string) error {
-	if version == "" {
-		version = BridgeNpmVersion
+	resolved, err := validateSetupVersion(version)
+	if err != nil {
+		return err
 	}
-	pkg := bridgePackage + "@" + version
+	pkg := bridgePackage + "@" + resolved
 	npm, err := npmBin()
 	if err != nil {
 		return err
@@ -52,9 +53,35 @@ func setupGlobal(ctx context.Context, version string) error {
 		return fmt.Errorf("npm install -g %s: %w", pkg, err)
 	}
 	if _, err := ResolvePath(); err != nil {
-		return fmt.Errorf("installed %s but cursor-sdk-bridge is still not on PATH: %w", pkg, err)
+		return setupGlobalResolveError(pkg, err)
 	}
 	return nil
+}
+
+func validateSetupVersion(version string) (string, error) {
+	if version == "" {
+		return BridgeNpmVersion, nil
+	}
+	if !semverAtLeast(version, BridgeNpmVersion) {
+		return "", fmt.Errorf(
+			"requested bridge version %s is below minimum %s",
+			version,
+			BridgeNpmVersion,
+		)
+	}
+	return version, nil
+}
+
+func setupGlobalResolveError(pkg string, err error) error {
+	if strings.Contains(err.Error(), "need >=") {
+		return fmt.Errorf("installed %s but bridge version check failed: %w", pkg, err)
+	}
+	return fmt.Errorf("installed %s but cursor-sdk-bridge is still not on PATH: %w", pkg, err)
+}
+
+// ValidateSetupVersionForTest exposes validateSetupVersion for tests.
+func ValidateSetupVersionForTest(version string) (string, error) {
+	return validateSetupVersion(version)
 }
 
 func setupLocal(ctx context.Context, opts SetupOptions) error {

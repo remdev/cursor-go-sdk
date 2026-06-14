@@ -79,43 +79,121 @@ func bridgePackageRoot(entry string) (string, error) {
 }
 
 func semverAtLeast(version, min string) bool {
-	vMajor, vMinor, vPatch, ok := parseSemver(version)
+	v, ok := parseSemverParts(version)
 	if !ok {
 		return false
 	}
-	mMajor, mMinor, mPatch, ok := parseSemver(min)
+	m, ok := parseSemverParts(min)
 	if !ok {
 		return false
 	}
-	if vMajor != mMajor {
-		return vMajor > mMajor
+	if v.major != m.major {
+		return v.major > m.major
 	}
-	if vMinor != mMinor {
-		return vMinor > mMinor
+	if v.minor != m.minor {
+		return v.minor > m.minor
 	}
-	return vPatch >= mPatch
+	if v.patch != m.patch {
+		return v.patch > m.patch
+	}
+	if v.prerelease == "" {
+		return true
+	}
+	if m.prerelease == "" {
+		return false
+	}
+	return comparePrerelease(v.prerelease, m.prerelease) >= 0
 }
 
-func parseSemver(version string) (major, minor, patch int, ok bool) {
+type semverParts struct {
+	major, minor, patch int
+	prerelease          string
+}
+
+func parseSemverParts(version string) (semverParts, bool) {
 	version = strings.TrimPrefix(strings.TrimSpace(version), "v")
-	if i := strings.IndexAny(version, "+-"); i >= 0 {
+	if i := strings.Index(version, "+"); i >= 0 {
+		version = version[:i]
+	}
+	prerelease := ""
+	if i := strings.Index(version, "-"); i >= 0 {
+		prerelease = version[i+1:]
 		version = version[:i]
 	}
 	parts := strings.Split(version, ".")
 	if len(parts) < 3 {
-		return 0, 0, 0, false
+		return semverParts{}, false
 	}
 	var err error
-	if major, err = strconv.Atoi(parts[0]); err != nil {
+	var p semverParts
+	if p.major, err = strconv.Atoi(parts[0]); err != nil {
+		return semverParts{}, false
+	}
+	if p.minor, err = strconv.Atoi(parts[1]); err != nil {
+		return semverParts{}, false
+	}
+	if p.patch, err = strconv.Atoi(parts[2]); err != nil {
+		return semverParts{}, false
+	}
+	p.prerelease = prerelease
+	return p, true
+}
+
+func comparePrerelease(a, b string) int {
+	if a == b {
+		return 0
+	}
+	aParts := strings.Split(a, ".")
+	bParts := strings.Split(b, ".")
+	n := len(aParts)
+	if len(bParts) > n {
+		n = len(bParts)
+	}
+	for i := 0; i < n; i++ {
+		var ap, bp string
+		if i < len(aParts) {
+			ap = aParts[i]
+		}
+		if i < len(bParts) {
+			bp = bParts[i]
+		}
+		if ap == bp {
+			continue
+		}
+		if ap == "" {
+			return -1
+		}
+		if bp == "" {
+			return 1
+		}
+		if cmp := comparePrereleaseIdentifier(ap, bp); cmp != 0 {
+			return cmp
+		}
+	}
+	return 0
+}
+
+func comparePrereleaseIdentifier(a, b string) int {
+	aNum, aErr := strconv.Atoi(a)
+	bNum, bErr := strconv.Atoi(b)
+	if aErr == nil && bErr == nil {
+		return aNum - bNum
+	}
+	if aErr == nil {
+		return -1
+	}
+	if bErr == nil {
+		return 1
+	}
+	return strings.Compare(a, b)
+}
+
+func parseSemver(version string) (major, minor, patch int, ok bool) {
+	p, ok := parseSemverParts(version)
+	if !ok {
 		return 0, 0, 0, false
 	}
-	if minor, err = strconv.Atoi(parts[1]); err != nil {
-		return 0, 0, 0, false
-	}
-	if patch, err = strconv.Atoi(parts[2]); err != nil {
-		return 0, 0, 0, false
-	}
-	return major, minor, patch, true
+	return p.major, p.minor, p.patch, true
 }
 
 // SemverAtLeastForTest exposes semverAtLeast for tests.

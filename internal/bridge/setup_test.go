@@ -3,6 +3,7 @@ package bridge_test
 import (
 	"os"
 	"path/filepath"
+	"strings"
 	"testing"
 
 	"github.com/remdev/cursor-go-sdk/internal/bridge"
@@ -69,5 +70,25 @@ func TestLocalBridgeDirPrefersBridgeDirOption(t *testing.T) {
 	}
 	if got != "/explicit/bridge" {
 		t.Fatalf("got %q", got)
+	}
+}
+
+func TestValidateSetupVersionRejectsBelowMinimum(t *testing.T) {
+	_, err := bridge.ValidateSetupVersionForTest("0.0.1")
+	if err == nil {
+		t.Fatal("expected error for version below minimum")
+	}
+	if !strings.Contains(err.Error(), "below minimum") {
+		t.Fatalf("unexpected error: %v", err)
+	}
+}
+
+func TestValidateSetupVersionDefaultsToPinned(t *testing.T) {
+	got, err := bridge.ValidateSetupVersionForTest("")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if got != bridge.BridgeNpmVersion {
+		t.Fatalf("got %q want %q", got, bridge.BridgeNpmVersion)
 	}
 }
