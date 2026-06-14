@@ -126,11 +126,25 @@ go run ./examples/coding-agent-cli -- "Explain the auth flow"
 go run ./examples/coding-agent-tui
 ```
 
+### Local e2e tests
+
+Opt-in integration tests against the real API (not run in CI):
+
+```bash
+export CURSOR_E2E=1
+export CURSOR_API_KEY=cursor_...
+./scripts/run-e2e.sh
+```
+
+Optional: `CURSOR_E2E_MODEL`, `CURSOR_E2E_WORKSPACE`, `CURSOR_E2E_TIMEOUT` (default `5m` in the script, `3m` per test).
+
 ## Configuration
 
 | Variable | Purpose |
 |----------|---------|
 | `CURSOR_API_KEY` | API key |
+| `CURSOR_E2E` | Set to `1` to enable local e2e tests in `e2e/` |
+| `CURSOR_E2E_MODEL` | Model for e2e (default `auto`, falls back to `CURSOR_MODEL`) |
 | `CURSOR_SDK_BRIDGE_BIN` | Override bridge launcher binary |
 | `CURSOR_SDK_BRIDGE_ROOT` | Directory with `bin/cursor-sdk-bridge` |
 | `CURSOR_SDK_NODE_BIN` | Override Node.js binary |

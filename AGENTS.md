@@ -8,7 +8,7 @@ Go SDK for Cursor agents. Parity target: TypeScript `@cursor/sdk` and Python `cu
 
 1. Read [references/README.md](references/README.md) — index of local docs and upstream links.
 2. Bridge prerequisite: `go run github.com/remdev/cursor-go-sdk/cmd/setup@latest` or `go run ./cmd/setup --local` in a clone (see [references/bridge.md](references/bridge.md)).
-3. Set `CURSOR_API_KEY` for live runs.
+3. Set `CURSOR_API_KEY` for live runs and e2e (`CURSOR_E2E=1 ./scripts/run-e2e.sh`).
 4. Run `go test ./...` after changes.
 
 ## Layout
@@ -20,6 +20,7 @@ Go SDK for Cursor agents. Parity target: TypeScript `@cursor/sdk` and Python `cu
 | `internal/bridge/` | Bridge subprocess launcher + path resolution |
 | `bridge/` | npm package `@cursor-go-sdk/cursor-sdk-bridge` — Connect server + `@cursor/sdk` |
 | `examples/` | Ports of [cursor/cookbook](https://github.com/cursor/cookbook) SDK examples |
+| `e2e/` | Opt-in local integration tests (`-tags=e2e`, `CURSOR_E2E=1`) |
 | `references/` | Curated docs for agents (TS SDK, cookbook mapping, bridge) |
 | `.artifacts/` | Local dev junk (venv, npm tarballs) — gitignored |
 

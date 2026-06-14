@@ -73,7 +73,7 @@ func (a *Agent) Send(ctx context.Context, message any, opts SendOptions) (*Run, 
 		"message": parseUserMessage(message).ToWire(),
 		"options": optionsWithAPIKey(a.apiKey, wireOpts),
 	}
-	if opts.IdempotencyKey != "" {
+	if opts.IdempotencyKey != "" && stringsHasPrefix(a.AgentID, "bc-") {
 		req["idempotencyKey"] = opts.IdempotencyKey
 	}
 	stream, err := a.client.agentStream(ctx, "Send", req)

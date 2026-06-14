@@ -23,7 +23,6 @@
     "cursor-sdk-bridge": "dist/bin/cursor-sdk-bridge.js"
   },
   "files": [
-    "bin",
     "dist",
     "gen",
     "proto"

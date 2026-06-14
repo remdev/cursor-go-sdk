@@ -39,6 +39,10 @@ func bridgeNotFoundError() error {
 }
 
 func launcherInRoot(root string) (string, error) {
+	js := filepath.Join(root, bridgeJSEntry)
+	if st, err := os.Stat(js); err == nil && !st.IsDir() {
+		return js, nil
+	}
 	path := filepath.Join(root, "bin", launcherName())
 	st, err := os.Stat(path)
 	if err != nil {

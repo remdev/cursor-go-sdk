@@ -11,7 +11,7 @@ Protobuf schema is owned in [`bridge/proto/`](../bridge/proto/). TypeScript stub
 ## Install (prerequisite)
 
 ```bash
-npm install -g @cursor-go-sdk/cursor-sdk-bridge
+npm install -g @cursor-go-sdk/cursor-sdk-bridge@0.0.2
 ```
 
 Requires **Node.js >= 18** and **npm**.
@@ -48,7 +48,7 @@ Custom tools: Go starts a loopback `ToolCallbackServer`; bridge forwards tool ex
 | Variable | Purpose |
 |----------|---------|
 | `CURSOR_SDK_BRIDGE_BIN` | Override launcher path |
-| `CURSOR_SDK_BRIDGE_ROOT` | Directory with `bin/cursor-sdk-bridge` (dev/local install) |
+| `CURSOR_SDK_BRIDGE_ROOT` | Bridge package root (uses `dist/bin/cursor-sdk-bridge.js` when built) |
 | `CURSOR_SDK_NODE_BIN` | Node binary for launcher |
 | `CURSOR_SDK_BRIDGE_URL` | Connect to an existing bridge (skip local launch) |
 | `CURSOR_SDK_BRIDGE_TOKEN` | Token for an existing bridge |

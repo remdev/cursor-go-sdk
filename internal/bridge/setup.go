@@ -21,7 +21,7 @@ type SetupOptions struct {
 	Version string
 }
 
-// Setup installs cursor-sdk-bridge when it is not already on PATH.
+// Setup installs cursor-sdk-bridge when it is not already on PATH at the required version.
 func Setup(ctx context.Context, opts SetupOptions) error {
 	if err := ensureNodeRuntime(); err != nil {
 		return err
@@ -45,7 +45,7 @@ func setupGlobal(ctx context.Context, version string) error {
 	if err != nil {
 		return err
 	}
-	cmd := exec.CommandContext(ctx, npm, "install", "-g", pkg)
+	cmd := exec.CommandContext(ctx, npm, "install", "-g", pkg, "--force")
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
 	if err := cmd.Run(); err != nil {
