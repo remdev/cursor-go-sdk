@@ -19,7 +19,7 @@ Requires **Node.js >= 18** and **npm**.
 Development from this repo:
 
 ```bash
-cd bridge && npm ci && npm run build && npm link
+go run ./cmd/setup --local
 ```
 
 Verify:

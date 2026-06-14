@@ -1,4 +1,14 @@
 #!/usr/bin/env sh
-DIR="$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)"
+# Dev/local launcher when CURSOR_SDK_BRIDGE_ROOT points at a clone (not used by npm global bin).
+set -e
+SCRIPT="$0"
+while [ -L "$SCRIPT" ]; do
+  TARGET="$(readlink "$SCRIPT")"
+  case "$TARGET" in
+    /*) SCRIPT="$TARGET" ;;
+    *) SCRIPT="$(CDPATH= cd -- "$(dirname -- "$SCRIPT")" && pwd)/$TARGET" ;;
+  esac
+done
+DIR="$(CDPATH= cd -- "$(dirname -- "$SCRIPT")" && pwd)"
 NODE="${CURSOR_SDK_NODE_BIN:-node}"
 exec "$NODE" "$DIR/../dist/bin/cursor-sdk-bridge.js" "$@"

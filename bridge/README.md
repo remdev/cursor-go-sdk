@@ -14,10 +14,16 @@ Install the bridge **before** using the Go SDK. The Go client launches the **`cu
 npm install -g @cursor-go-sdk/cursor-sdk-bridge
 ```
 
+Or via Go (from any project):
+
+```bash
+go run github.com/remdev/cursor-go-sdk/cmd/setup@latest
+```
+
 From a clone of this repository (development):
 
 ```bash
-cd bridge && npm ci && npm run build && npm link
+go run ./cmd/setup --local
 ```
 
 Requires **Node.js >= 18**.
@@ -41,7 +47,8 @@ See [PUBLISHING.md](PUBLISHING.md).
 | `gen/ts/` | Generated Connect + ES modules (`npm run generate`) |
 | `src/` | TypeScript source (Connect RPC handlers → `@cursor/sdk`) |
 | `dist/` | Compiled output (`npm run build`, gitignored) |
-| `bin/cursor-sdk-bridge` | Shell launcher → `dist/bin/cursor-sdk-bridge.js` |
+| `bin/cursor-sdk-bridge` | Dev/local shell launcher → `dist/bin/cursor-sdk-bridge.js` |
+| npm `bin` | Points at `dist/bin/cursor-sdk-bridge.js` (works with `npm install -g`) |
 
 ## Wire protocol
 

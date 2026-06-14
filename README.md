@@ -17,6 +17,15 @@ Local agents run through **`cursor-sdk-bridge`** — a Node adapter over [`@curs
 ## Install
 
 ```bash
+go run github.com/remdev/cursor-go-sdk/cmd/setup@latest
+go get github.com/remdev/cursor-go-sdk/cursor
+```
+
+This installs `@cursor-go-sdk/cursor-sdk-bridge` via npm (requires Node.js >= 18).
+
+Manual alternative:
+
+```bash
 npm install -g @cursor-go-sdk/cursor-sdk-bridge
 go get github.com/remdev/cursor-go-sdk/cursor
 ```
@@ -32,7 +41,7 @@ if err := cursor.EnsureBridgeInstalled(ctx); err != nil {
 Development from a clone:
 
 ```bash
-cd bridge && npm ci && npm run build && npm link
+go run ./cmd/setup --local
 ```
 
 ## Authentication

@@ -14,7 +14,7 @@ Thanks for your interest in `cursor-go-sdk`. This is a community project; see [D
 git clone https://github.com/remdev/cursor-go-sdk.git
 cd cursor-go-sdk
 
-cd bridge && npm ci && npm run build && npm link && cd ..
+go run ./cmd/setup --local
 
 # After editing bridge/proto/*.proto:
 # cd bridge && npm run generate && npm run build

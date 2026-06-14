@@ -7,7 +7,7 @@ Go SDK for Cursor agents. Parity target: TypeScript `@cursor/sdk` and Python `cu
 ## Before coding
 
 1. Read [references/README.md](references/README.md) — index of local docs and upstream links.
-2. Bridge prerequisite: `npm install -g @cursor-go-sdk/cursor-sdk-bridge` or `cd bridge && npm ci && npm run build && npm link` (see [references/bridge.md](references/bridge.md)).
+2. Bridge prerequisite: `go run github.com/remdev/cursor-go-sdk/cmd/setup@latest` or `go run ./cmd/setup --local` in a clone (see [references/bridge.md](references/bridge.md)).
 3. Set `CURSOR_API_KEY` for live runs.
 4. Run `go test ./...` after changes.
 
@@ -28,7 +28,7 @@ Go SDK for Cursor agents. Parity target: TypeScript `@cursor/sdk` and Python `cu
 Go cannot load the npm SDK directly. **`@cursor-go-sdk/cursor-sdk-bridge`** installs the `cursor-sdk-bridge` binary; Go launches it and talks Connect over loopback.
 
 ```bash
-cd bridge && npm ci && npm run build && npm link
+go run ./cmd/setup --local
 ```
 
 - **npm package:** `bridge/package.json` → `@cursor-go-sdk/cursor-sdk-bridge`, `@cursor/sdk`, Connect/protobuf.
