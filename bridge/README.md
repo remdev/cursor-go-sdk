@@ -59,7 +59,7 @@ Connect services: `SdkAgentService`, `SdkBridgeControlService`, `SdkCursorServic
 ## Go SDK discovery
 
 1. `CURSOR_SDK_BRIDGE_BIN` — absolute path to the launcher
-2. `CURSOR_SDK_BRIDGE_ROOT` — directory containing `bin/cursor-sdk-bridge`
+2. `CURSOR_SDK_BRIDGE_ROOT` — bridge package root (prefers `dist/bin/cursor-sdk-bridge.js` when built)
 3. `cursor-sdk-bridge` on `PATH` (from global install or `npm link`)
 
 See [references/bridge.md](../references/bridge.md).

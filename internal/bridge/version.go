@@ -64,19 +64,16 @@ func bridgePackageRoot(entry string) (string, error) {
 	if strings.HasSuffix(abs, binSuffix) {
 		return filepath.Dir(filepath.Dir(abs)), nil
 	}
-	if strings.Contains(abs, string(filepath.Separator)+"node_modules"+string(filepath.Separator)) {
-		dir := filepath.Dir(abs)
-		for {
-			pkgJSON := filepath.Join(dir, "package.json")
-			if isBridgePackage(pkgJSON) {
-				return dir, nil
-			}
-			parent := filepath.Dir(dir)
-			if parent == dir {
-				break
-			}
-			dir = parent
+	dir := filepath.Dir(abs)
+	for {
+		if isBridgePackage(filepath.Join(dir, "package.json")) {
+			return dir, nil
 		}
+		parent := filepath.Dir(dir)
+		if parent == dir {
+			break
+		}
+		dir = parent
 	}
 	return "", fmt.Errorf("cannot locate bridge package root from %q", entry)
 }
@@ -101,6 +98,9 @@ func semverAtLeast(version, min string) bool {
 
 func parseSemver(version string) (major, minor, patch int, ok bool) {
 	version = strings.TrimPrefix(strings.TrimSpace(version), "v")
+	if i := strings.IndexAny(version, "+-"); i >= 0 {
+		version = version[:i]
+	}
 	parts := strings.Split(version, ".")
 	if len(parts) < 3 {
 		return 0, 0, 0, false
@@ -121,4 +121,9 @@ func parseSemver(version string) (major, minor, patch int, ok bool) {
 // SemverAtLeastForTest exposes semverAtLeast for tests.
 func SemverAtLeastForTest(version, min string) bool {
 	return semverAtLeast(version, min)
+}
+
+// BridgePackageVersionForTest exposes bridgePackageVersion for tests.
+func BridgePackageVersionForTest(entry string) (string, error) {
+	return bridgePackageVersion(entry)
 }

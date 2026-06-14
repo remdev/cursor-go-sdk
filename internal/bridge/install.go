@@ -33,7 +33,7 @@ func bridgeNotFoundError() error {
 	b.WriteString("\n\n")
 	b.WriteString("From a clone of cursor-go-sdk:\n\n")
 	b.WriteString("\tgo run ./cmd/setup --local\n\n")
-	b.WriteString("Or set CURSOR_SDK_BRIDGE_BIN to the launcher path, or CURSOR_SDK_BRIDGE_ROOT to an installed bridge directory.\n")
+	b.WriteString("Or set CURSOR_SDK_BRIDGE_BIN to the launcher path, or CURSOR_SDK_BRIDGE_ROOT to the bridge package root.\n")
 	b.WriteString("Requires Node.js >= 18.\n")
 	return fmt.Errorf("%s", strings.TrimRight(b.String(), "\n"))
 }

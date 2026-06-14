@@ -14,7 +14,7 @@ type SetupOptions struct {
 }
 
 // Setup installs runtime prerequisites (cursor-sdk-bridge via npm).
-// If the bridge is already on PATH, Setup is a no-op.
+// If ResolvePath succeeds (bridge on PATH at the required version), Setup is a no-op.
 func Setup(ctx context.Context, opts SetupOptions) error {
 	return bridge.Setup(ctx, bridge.SetupOptions{
 		Local:     opts.Local,

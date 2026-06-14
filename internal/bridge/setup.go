@@ -58,15 +58,11 @@ func setupGlobal(ctx context.Context, version string) error {
 }
 
 func setupLocal(ctx context.Context, opts SetupOptions) error {
-	bridgeDir := opts.BridgeDir
-	if bridgeDir == "" {
-		var ok bool
-		bridgeDir, ok = findBridgeDir("")
-		if !ok {
-			return fmt.Errorf("bridge/ not found; run from a cursor-go-sdk clone or pass --local with CURSOR_SDK_BRIDGE_ROOT")
-		}
+	bridgeDir, err := localBridgeDir(opts)
+	if err != nil {
+		return err
 	}
-	bridgeDir, err := filepath.Abs(bridgeDir)
+	bridgeDir, err = filepath.Abs(bridgeDir)
 	if err != nil {
 		return err
 	}
@@ -146,7 +142,28 @@ func npmBin() (string, error) {
 	return path, nil
 }
 
+func localBridgeDir(opts SetupOptions) (string, error) {
+	if opts.BridgeDir != "" {
+		return opts.BridgeDir, nil
+	}
+	if root := strings.TrimSpace(os.Getenv("CURSOR_SDK_BRIDGE_ROOT")); root != "" {
+		return root, nil
+	}
+	bridgeDir, ok := findBridgeDir("")
+	if !ok {
+		return "", fmt.Errorf(
+			"bridge/ not found; run from a cursor-go-sdk clone, set CURSOR_SDK_BRIDGE_ROOT, or pass --bridge-dir",
+		)
+	}
+	return bridgeDir, nil
+}
+
 // FindBridgeDirForTest exposes findBridgeDir for tests.
 func FindBridgeDirForTest(start string) (string, bool) {
 	return findBridgeDir(start)
+}
+
+// LocalBridgeDirForTest exposes localBridgeDir for tests.
+func LocalBridgeDirForTest(opts SetupOptions) (string, error) {
+	return localBridgeDir(opts)
 }

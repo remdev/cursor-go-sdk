@@ -146,7 +146,7 @@ Optional: `CURSOR_E2E_MODEL`, `CURSOR_E2E_WORKSPACE`, `CURSOR_E2E_TIMEOUT` (defa
 | `CURSOR_E2E` | Set to `1` to enable local e2e tests in `e2e/` |
 | `CURSOR_E2E_MODEL` | Model for e2e (default `auto`, falls back to `CURSOR_MODEL`) |
 | `CURSOR_SDK_BRIDGE_BIN` | Override bridge launcher binary |
-| `CURSOR_SDK_BRIDGE_ROOT` | Directory with `bin/cursor-sdk-bridge` |
+| `CURSOR_SDK_BRIDGE_ROOT` | Bridge package root (prefers `dist/bin/cursor-sdk-bridge.js`, else `bin/cursor-sdk-bridge`) |
 | `CURSOR_SDK_NODE_BIN` | Override Node.js binary |
 | `CURSOR_SDK_BRIDGE_URL` | Connect to an existing bridge |
 | `CURSOR_SDK_BRIDGE_TOKEN` | Token for an existing bridge |
