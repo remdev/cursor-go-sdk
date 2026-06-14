@@ -12,3 +12,6 @@ bridge/node_modules/
 coverage.out
 coverage.txt
 *.prof
+
+# npm pack artifacts
+*.tgz

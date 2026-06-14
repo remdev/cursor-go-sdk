@@ -2,6 +2,7 @@
 
 [![CI](https://github.com/remdev/cursor-go-sdk/actions/workflows/ci.yml/badge.svg)](https://github.com/remdev/cursor-go-sdk/actions/workflows/ci.yml)
 [![Go Reference](https://pkg.go.dev/badge/github.com/remdev/cursor-go-sdk/cursor.svg)](https://pkg.go.dev/github.com/remdev/cursor-go-sdk/cursor)
+[![npm bridge](https://img.shields.io/npm/v/@cursor-go-sdk/cursor-sdk-bridge)](https://www.npmjs.com/package/@cursor-go-sdk/cursor-sdk-bridge)
 [![License: MIT](https://img.shields.io/github/license/remdev/cursor-go-sdk)](LICENSE)
 [![Go Version](https://img.shields.io/github/go-mod/go-version/remdev/cursor-go-sdk)](go.mod)
 
@@ -12,7 +13,18 @@ Go client for [Cursor agents](https://cursor.com/docs/sdk/typescript). API parit
 
 Local agents run through **`cursor-sdk-bridge`** — a Node adapter over [`@cursor/sdk`](https://www.npmjs.com/package/@cursor/sdk). Install the bridge once; the Go SDK launches it automatically.
 
-**Requirements:** Go 1.26+, Node.js >= 18, npm, [`@cursor-go-sdk/cursor-sdk-bridge`](bridge/) on `PATH`.
+**Requirements:** Go 1.26+, Node.js >= 18, npm, [`@cursor-go-sdk/cursor-sdk-bridge`](bridge/) `>= 0.0.2` on `PATH`.
+
+## How is this different?
+
+| | cursor-go-sdk | REST-only Go SDKs | Official `@cursor/sdk` |
+|--|---------------|-------------------|------------------------|
+| API | Agent SDK parity | Cloud Agents REST | Agent SDK (official) |
+| Local agents | Yes (via bridge) | No | Yes |
+| Cloud agents | Yes | Yes | Yes |
+| Language | Go | Go | TypeScript |
+
+Not a REST wrapper for the Cloud Agents API — this mirrors `Agent.create`, `agent.send`, `run.stream`, and related SDK surface. See [docs/which-go-client.md](docs/which-go-client.md) for a fuller comparison.
 
 ## Install
 
@@ -174,6 +186,8 @@ if err != nil {
 
 ## Documentation
 
+- [Changelog](CHANGELOG.md)
+- [Which Go client for Cursor?](docs/which-go-client.md)
 - [Disclaimer (unofficial project)](DISCLAIMER.md)
 - [Contributing](CONTRIBUTING.md)
 - [Security policy](SECURITY.md)
