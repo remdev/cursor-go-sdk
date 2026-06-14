@@ -1,13 +1,13 @@
 # Disclaimer
 
-**This is an unofficial, community-maintained project.**
+Community-maintained project — not an official Cursor or Anysphere product.
 
-`cursor-go-sdk` is **not** affiliated with, endorsed by, sponsored by, or maintained by [Cursor](https://cursor.com), [Anysphere](https://anysphere.co), or their employees.
+`cursor-go-sdk` is not affiliated with, endorsed by, sponsored by, or maintained by [Cursor](https://cursor.com), [Anysphere](https://anysphere.co), or their employees.
 
 ## What this project is
 
 - A third-party Go client that aims for API parity with the official TypeScript (`@cursor/sdk`) and Python (`cursor-sdk`) packages.
-- A third-party Go client with a Node adapter that drives the official [`@cursor/sdk`](https://www.npmjs.com/package/@cursor/sdk) npm package over Connect.
+- A Node adapter that drives the official [`@cursor/sdk`](https://www.npmjs.com/package/@cursor/sdk) npm package over Connect.
 
 ## What this project is not
 

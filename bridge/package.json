@@ -1,7 +1,7 @@
 {
   "name": "@cursor-go-sdk/cursor-sdk-bridge",
   "version": "0.0.2",
-  "description": "Unofficial Connect RPC bridge over @cursor/sdk for cursor-go-sdk. Prerequisite for the Go SDK.",
+  "description": "Connect RPC bridge over @cursor/sdk for cursor-go-sdk. Prerequisite for the Go SDK.",
   "license": "MIT",
   "repository": {
     "type": "git",

@@ -6,8 +6,8 @@ body:
   - type: markdown
     attributes:
       value: |
-        Feature requests should align with unofficial API parity goals.
-        Official SDK features belong upstream at Cursor — link docs if relevant.
+        Feature requests should align with API parity goals for `@cursor/sdk`.
+        Upstream SDK features belong at Cursor — link docs if relevant.
 
   - type: textarea
     id: problem

@@ -1,6 +1,6 @@
 # Contributing
 
-Thanks for your interest in `cursor-go-sdk`. This is a community project; see [DISCLAIMER.md](DISCLAIMER.md) for the relationship to Cursor and Anysphere.
+Thanks for your interest in `cursor-go-sdk`. See [DISCLAIMER.md](DISCLAIMER.md) for how this project relates to Cursor and upstream SDKs.
 
 ## Prerequisites
 

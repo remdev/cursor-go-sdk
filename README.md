@@ -1,13 +1,10 @@
-# Community Go client for Cursor agents (unofficial)
+# Go client for Cursor agents
 
 [![CI](https://github.com/remdev/cursor-go-sdk/actions/workflows/ci.yml/badge.svg)](https://github.com/remdev/cursor-go-sdk/actions/workflows/ci.yml)
 [![Go Reference](https://pkg.go.dev/badge/github.com/remdev/cursor-go-sdk/cursor.svg)](https://pkg.go.dev/github.com/remdev/cursor-go-sdk/cursor)
 [![npm bridge](https://img.shields.io/npm/v/@cursor-go-sdk/cursor-sdk-bridge)](https://www.npmjs.com/package/@cursor-go-sdk/cursor-sdk-bridge)
 [![License: MIT](https://img.shields.io/github/license/remdev/cursor-go-sdk)](LICENSE)
 [![Go Version](https://img.shields.io/github/go-mod/go-version/remdev/cursor-go-sdk)](go.mod)
-
-> **Unofficial community project** — not affiliated with [Cursor](https://cursor.com) or [Anysphere](https://anysphere.co).  
-> See **[DISCLAIMER.md](DISCLAIMER.md)** for details. Official SDKs: [TypeScript docs](https://cursor.com/docs/sdk/typescript).
 
 Go client for [Cursor agents](https://cursor.com/docs/sdk/typescript). API parity with TypeScript `@cursor/sdk` and Python `cursor-sdk`.
 
@@ -188,7 +185,7 @@ if err != nil {
 
 - [Changelog](CHANGELOG.md)
 - [Which Go client for Cursor?](docs/which-go-client.md)
-- [Disclaimer (unofficial project)](DISCLAIMER.md)
+- [Disclaimer](DISCLAIMER.md)
 - [Contributing](CONTRIBUTING.md)
 - [Security policy](SECURITY.md)
 - [API mapping (TS/Python → Go)](references/go-api-map.md)
@@ -197,4 +194,4 @@ if err != nil {
 
 ## License
 
-[MIT](LICENSE) — see [DISCLAIMER.md](DISCLAIMER.md) regarding third-party trademarks and Cursor services.
+[MIT](LICENSE)

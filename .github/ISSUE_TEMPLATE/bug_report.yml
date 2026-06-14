@@ -6,8 +6,8 @@ body:
   - type: markdown
     attributes:
       value: |
-        This is an **unofficial** community project — not Cursor/Anysphere support.
-        See [DISCLAIMER.md](../DISCLAIMER.md).
+        For Cursor account or billing issues, use [Cursor support](https://cursor.com/docs).
+        SDK bugs in this repo: fill out the form below.
 
   - type: textarea
     id: description

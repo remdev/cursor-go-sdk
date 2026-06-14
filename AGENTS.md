@@ -2,7 +2,7 @@
 
 Go SDK for Cursor agents. Parity target: TypeScript `@cursor/sdk` and Python `cursor-sdk`, idiomatic Go API.
 
-**Unofficial community project** — see [DISCLAIMER.md](DISCLAIMER.md). Not affiliated with Cursor or Anysphere.
+See [DISCLAIMER.md](DISCLAIMER.md) for project status.
 
 ## Before coding
 

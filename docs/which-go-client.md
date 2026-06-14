@@ -9,7 +9,7 @@ This repo is one of several community Go options. They target different APIs and
 | **Local agents** | Yes — via Node bridge over `@cursor/sdk` | No | Yes — native |
 | **Cloud agents** | Yes — same Go types | Yes — HTTP | Yes |
 | **Node.js required** | Yes (bridge runtime) | No | Yes |
-| **Maintained by** | Community (unofficial) | Community (unofficial) | Cursor / Anysphere |
+| **Maintained by** | Community | Community | Cursor |
 
 ## Community REST clients (cloud-only)
 
@@ -29,6 +29,4 @@ Useful when you only need the Cloud Agents HTTP API and do not need local agents
 - You can run Node or Python in your stack without a bridge.
 - You want the officially supported SDK path with the fastest upstream updates.
 
-## Disclaimer
-
-All community projects listed here are **unofficial** and not affiliated with Cursor or Anysphere. See [DISCLAIMER.md](../DISCLAIMER.md).
+Project status and trademarks: [DISCLAIMER.md](../DISCLAIMER.md).
