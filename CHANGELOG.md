@@ -7,10 +7,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-### Changed
-
-- Minimum Go version for the root module lowered to 1.23 (`iter.Seq2` streaming API); TUI example requires Go 1.24.2 (`charmbracelet/bubbles`).
-
 ## [0.1.0] - 2026-06-15
 
 ### Added
@@ -26,6 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - README install path: prefer `go run .../cmd/setup@latest` over manual `npm link`
 - `@cursor-go-sdk/cursor-sdk-bridge` npm `bin` points at compiled JS entrypoint (fixes global/Homebrew install)
 - Bridge subprocess uses `exec.Command` with startup-only context (not tied to caller RPC context)
+- Minimum Go version for the root module: **1.23** (TUI example: **1.24.2**)
 
 ### Fixed
 
