@@ -239,16 +239,14 @@ func (c *Client) createAgent(ctx context.Context, opts AgentOptions, idempotency
 			"missing_model",
 		)
 	}
-	if c.toolCallback != nil {
-		if local, ok := wire["local"].(map[string]any); ok {
-			if tools, ok := local["customTools"].(map[string]any); ok && len(tools) > 0 {
-				agentID := stringField(wire, "agentId")
-				if agentID == "" {
-					agentID = "pending"
-				}
-				c.toolCallback.RegisterAgent(agentID, opts.Local.CustomTools)
-			}
+	customToolsPending := false
+	if c.toolCallback != nil && opts.Local != nil && len(opts.Local.CustomTools) > 0 {
+		regAgentID := stringField(wire, "agentId")
+		if regAgentID == "" {
+			regAgentID = "pending"
+			customToolsPending = true
 		}
+		c.toolCallback.RegisterAgent(regAgentID, opts.Local.CustomTools)
 	}
 	req := map[string]any{"options": stripEmptyMessage(wire)}
 	if opts.Cloud != nil {
@@ -264,9 +262,16 @@ func (c *Client) createAgent(ctx context.Context, opts AgentOptions, idempotency
 	}
 	resp, err := c.agentUnary(ctx, "CreateAgent", req)
 	if err != nil {
+		if customToolsPending {
+			c.toolCallback.UnregisterAgent("pending")
+		}
 		return nil, err
 	}
 	agentID := stringField(resp, "agentId")
+	if customToolsPending && agentID != "" {
+		c.toolCallback.RegisterAgent(agentID, opts.Local.CustomTools)
+		c.toolCallback.UnregisterAgent("pending")
+	}
 	var model *ModelSelection
 	if m, ok := resp["model"].(map[string]any); ok {
 		ms := parseModelSelection(m)
@@ -279,6 +284,9 @@ func (c *Client) createAgent(ctx context.Context, opts AgentOptions, idempotency
 
 func (c *Client) resumeAgent(ctx context.Context, agentID string, opts AgentOptions) (*Agent, error) {
 	wire := opts.ToWire()
+	if c.toolCallback != nil && opts.Local != nil && len(opts.Local.CustomTools) > 0 {
+		c.toolCallback.RegisterAgent(agentID, opts.Local.CustomTools)
+	}
 	resp, err := c.agentUnary(ctx, "ResumeAgent", map[string]any{
 		"agentId": agentID, "options": stripEmptyMessage(wire),
 	})
